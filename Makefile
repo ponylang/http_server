@@ -1,12 +1,12 @@
 config ?= release
 
-PACKAGE := http
+PACKAGE := http_server
 GET_DEPENDENCIES_WIITH := corral fetch
 CLEAN_DEPENDENCIES_WIITH := corral clean
 COMPILE_WITH := corral run -- ponyc
 
 BUILD_DIR ?= build/$(config)
-SRC_DIR ?= $(PACKAGE)
+SRC_DIR ?= http/server
 EXAMPLES_DIR := examples
 TEST_DIR := $(SRC_DIR)/test
 BENCH_DIR := bench

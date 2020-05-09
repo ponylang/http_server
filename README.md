@@ -1,26 +1,30 @@
-# http
+# http-server
 
 Ponylang package to build server applications for the HTTP protocol.
 
 ## Status
 
-[![Actions Status](https://github.com/ponylang/http/workflows/vs-ponyc-latest/badge.svg)](https://github.com/ponylang/http/actions)
+[![Actions Status](https://github.com/ponylang/http-server/workflows/vs-ponyc-latest/badge.svg)](https://github.com/ponylang/http-server/actions)
 
-`http` is beta quality software that will change frequently. Expect breaking changes. That said, you should feel comfortable using it in your projects.
+`http-server` is beta quality software that will change frequently. Expect breaking changes. That said, you should feel comfortable using it in your projects.
 
 ## Installation
 
-* Add `http` (and its transitive dependencies) to your build dependencies using [corral](https://github.com/ponylang/corral):
+* Add `http_server` (and its transitive dependencies) to your build dependencies using [corral](https://github.com/ponylang/corral):
 
 ```bash
-corral add github.com/ponylang/http.git
+corral add github.com/ponylang/http-server.git
 ```
 
 * Execute `corral fetch` to fetch your dependencies.
-* Include this package by adding `use "http"` to your Pony sources.
+* Include this package by adding `use "http/server"` to your Pony sources.
 * Execute `corral run -- ponyc` to compile your application
 
 Note: The `net-ssl` transitive dependency requires a C SSL library to be installed. Please see the [net-ssl installation instructions](https://github.com/ponylang/net-ssl#installation) for more information.
+
+## Usage Example
+
+TBD
 
 ## Status
 
