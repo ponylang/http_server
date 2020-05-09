@@ -9,7 +9,7 @@
       "version": "0.5.0"
     },
     {
-      "locator": "github.com/ponylang/net-ssl.git",
+      "locator": "github.com/ponylang/net_ssl.git",
       "version": "1.0.0"
     }
   ],
