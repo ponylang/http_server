@@ -13,7 +13,7 @@ Ponylang package to build server applications for the HTTP protocol.
 * Install [corral](https://github.com/ponylang/corral):
 * `corral add github.com/ponylang/http_server.git`
 * Execute `corral fetch` to fetch your dependencies.
-* Include this package by adding `use "http/server"` to your Pony sources.
+* Include this package by adding `use "http_server"` to your Pony sources.
 * Execute `corral run -- ponyc` to compile your application
 
 Note: The `net_ssl` transitive dependency requires a C SSL library to be installed. Please see the [net_ssl installation instructions](https://github.com/ponylang/net_ssl#installation) for more information.
