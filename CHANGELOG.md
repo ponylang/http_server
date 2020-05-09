@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Rename package from http/server to http_server. ([PR #6](https://github.com/ponylang/http_server/pull/6))
 
 ## [0.1.1] - 2020-05-09
 
