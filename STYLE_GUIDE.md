@@ -1,3 +1,3 @@
 # Style Guide
 
-http-server follows the [Pony standard library Style Guide](https://github.com/ponylang/ponyc/blob/master/STYLE_GUIDE.md).
+http_server follows the [Pony standard library Style Guide](https://github.com/ponylang/ponyc/blob/master/STYLE_GUIDE.md).
