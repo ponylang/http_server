@@ -6,7 +6,7 @@ CLEAN_DEPENDENCIES_WIITH := corral clean
 COMPILE_WITH := corral run -- ponyc
 
 BUILD_DIR ?= build/$(config)
-SRC_DIR ?= http/server
+SRC_DIR ?= $(PACKAGE)
 EXAMPLES_DIR := examples
 TEST_DIR := $(SRC_DIR)/test
 BENCH_DIR := bench

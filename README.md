@@ -1,17 +1,17 @@
-# http-server
+# http_server
 
 Ponylang package to build server applications for the HTTP protocol.
 
 ## Status
 
-[![Actions Status](https://github.com/ponylang/http-server/workflows/vs-ponyc-latest/badge.svg)](https://github.com/ponylang/http-server/actions)
+[![Actions Status](https://github.com/ponylang/http_server/workflows/vs-ponyc-latest/badge.svg)](https://github.com/ponylang/http_server/actions)
 
-`http-server` is beta quality software that will change frequently. Expect breaking changes. That said, you should feel comfortable using it in your projects.
+`http_server` is beta quality software that will change frequently. Expect breaking changes. That said, you should feel comfortable using it in your projects.
 
 ## Installation
 
 * Install [corral](https://github.com/ponylang/corral):
-* `corral add github.com/ponylang/http-server.git`
+* `corral add github.com/ponylang/http_server.git`
 * Execute `corral fetch` to fetch your dependencies.
 * Include this package by adding `use "http/server"` to your Pony sources.
 * Execute `corral run -- ponyc` to compile your application
