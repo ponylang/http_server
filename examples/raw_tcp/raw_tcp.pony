@@ -9,7 +9,7 @@ marking the request end.
 """
 use "net"
 use "valbytes"
-use "../../http/server"
+use "../../http_server"
 
 
 class MyTCPConnectionNotify is TCPConnectionNotify
