@@ -10,7 +10,7 @@ Ponylang package to build server applications for the HTTP protocol.
 
 ## Installation
 
-* Add `http-server` (and its transitive dependencies) to your build dependencies using [corral](https://github.com/ponylang/corral):
+* Install [corral](https://github.com/ponylang/corral):
 * `corral add github.com/ponylang/http-server.git`
 * Execute `corral fetch` to fetch your dependencies.
 * Include this package by adding `use "http/server"` to your Pony sources.
