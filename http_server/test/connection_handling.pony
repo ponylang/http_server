@@ -8,6 +8,8 @@ primitive ConnectionHandlingTests is TestList
     test(ConnectionTimeoutTest)
     test(ConnectionCloseHeaderTest)
     test(ConnectionHTTP10Test)
+    test(ConnectionCloseHeaderResponseTest)
+    test(ConnectionCloseHeaderRawResponseTest)
 
 class val _ClosedTestHandlerFactory is HandlerFactory
   let _h: TestHelper
@@ -113,6 +115,111 @@ class iso ConnectionCloseHeaderTest is UnitTest
             h.fail("closed")
         end,
         _ClosedTestHandlerFactory(h),
+        ServerConfig()
+      )
+    )
+
+class iso ConnectionCloseHeaderResponseTest is UnitTest
+  """
+  test that connection is closed when the application returned a 'Connection: close'
+  header.
+  """
+  fun name(): String => "connection/connection_close_response"
+
+  fun apply(h: TestHelper) ? =>
+    h.long_test(Nanos.from_seconds(5))
+    h.expect_action("request-received")
+    h.expect_action("connection-closed")
+    h.dispose_when_done(
+      Server(
+        h.env.root as TCPListenerAuth,
+        object iso is ServerNotify
+          fun ref listening(server: Server ref) =>
+            try
+              (let host, let port) = server.local_address().name()?
+              h.log("listening on " + host + ":" + port)
+              TCPConnection(
+                h.env.root as AmbientAuth,
+                object iso is TCPConnectionNotify
+                  fun ref connected(conn: TCPConnection ref) =>
+                    conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
+                  fun ref connect_failed(conn: TCPConnection ref) =>
+                    h.fail("connect failed")
+                end,
+                host,
+                port
+              )
+            end
+          fun ref closed(server: Server ref) =>
+            h.fail("closed")
+        end,
+        {(session)(h): Handler ref^ =>
+          object ref is Handler
+            fun ref apply(request: Request val, request_id: RequestID) =>
+              h.complete_action("request-received")
+              let res = BuildableResponse(where status' = StatusOK)
+              res.add_header("Connection", "close")
+              res.set_content_length(0)
+              session.send_start(consume res, request_id)
+              session.send_finished(request_id)
+
+            fun ref closed() =>
+              h.complete_action("connection-closed")
+          end
+        },
+        ServerConfig()
+      )
+    )
+
+class iso ConnectionCloseHeaderRawResponseTest is UnitTest
+  fun name(): String => "connection/connection_close_raw_response"
+
+  fun apply(h: TestHelper) ? =>
+    h.long_test(Nanos.from_seconds(5))
+    h.expect_action("request-received")
+    h.expect_action("connection-closed")
+    h.dispose_when_done(
+      Server(
+        h.env.root as TCPListenerAuth,
+        object iso is ServerNotify
+          fun ref listening(server: Server ref) =>
+            try
+              (let host, let port) = server.local_address().name()?
+              h.log("listening on " + host + ":" + port)
+              TCPConnection(
+                h.env.root as AmbientAuth,
+                object iso is TCPConnectionNotify
+                  fun ref connected(conn: TCPConnection ref) =>
+                    conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
+                  fun ref connect_failed(conn: TCPConnection ref) =>
+                    h.fail("connect failed")
+                end,
+                host,
+                port
+              )
+            end
+          fun ref closed(server: Server ref) =>
+            h.fail("closed")
+        end,
+        {(session)(h): Handler ref^ =>
+          object ref is Handler
+            fun ref apply(request: Request val, request_id: RequestID) =>
+              h.complete_action("request-received")
+              session.send_raw(
+                Responses.builder()
+                  .set_status(StatusOK)
+                  .add_header("Connection", "close")
+                  .add_header("Content-Length", "0")
+                  .finish_headers()
+                  .build(),
+                request_id
+                where close_session = true)
+              session.send_finished(request_id)
+
+            fun ref closed() =>
+              h.complete_action("connection-closed")
+          end
+        },
         ServerConfig()
       )
     )
