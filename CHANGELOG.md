@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
+- Close Connection when application requested it with Connection: close header ([PR #14](https://github.com/ponylang/http_server/pull/14))
 
 ### Added
 
