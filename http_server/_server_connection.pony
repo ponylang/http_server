@@ -108,6 +108,12 @@ actor _ServerConnection is Session
 
   fun ref _send_start(response: Response val, request_id: RequestID) =>
     _conn.unmute()
+
+    // honor Connection: close header set by application
+    match response.header("Connection")
+    | "close" => _close_after = request_id
+    end
+
     let expected_id = RequestIDs.next(_sent_response)
     if request_id == expected_id then
       // just send it through. all good
@@ -221,7 +227,7 @@ actor _ServerConnection is Session
 
 //// OPTIMIZED API
 
-  be send_raw(raw: ByteSeqIter, request_id: RequestID) =>
+  be send_raw(raw: ByteSeqIter, request_id: RequestID, close_session: Bool = false) =>
     """
     If you have your response already in bytes, and don't want to build an expensive
     [Response](http-Response) object, use this method to send your [ByteSeqIter](builtin-ByteSeqIter).
@@ -230,9 +236,21 @@ actor _ServerConnection is Session
     or, to further optimize your writes to the network, it might already contain
     the response body.
 
+    If the session should be closed after sending this response,
+    no matter the requested standard HTTP connection handling,
+    set `close_session` to `true`. To be a good HTTP citizen, include
+    a `Connection: close` header in the raw response, to signal to the client
+    to also close the session.
+    If set to `false`, then normal HTTP connection handling applies
+    (request `Connection` header, HTTP/1.0 without `Connection: keep-alive`, etc.).
+
     In each case, finish sending your raw response using `send_finished`.
     """
     _conn.unmute()
+    if close_session then
+      // session will be closed when calling send_finished()
+      _close_after = request_id
+    end
     let expected_id = RequestIDs.next(_sent_response)
     if request_id == expected_id then
       _sent_response = request_id

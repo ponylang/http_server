@@ -161,7 +161,7 @@ interface tag Session
     None
 
   // optimized raw api
-  be send_raw(raw: ByteSeqIter, request_id: RequestID) =>
+  be send_raw(raw: ByteSeqIter, request_id: RequestID, close_session: Bool = false) =>
     """
     ### Optimized raw API
 
@@ -169,6 +169,14 @@ interface tag Session
 
     These bytes may or may not include the response body.
     You can use `Session.send_chunk()` to send the response body piece by piece.
+
+    If the session should be closed after sending this response,
+    no matter the requested standard HTTP connection handling,
+    set `close_session` to `true`. To be a good HTTP citizen, include
+    a `Connection: close` header in the raw response, to signal to the client
+    to also close the session.
+    If set to `false`, then normal HTTP connection handling applies
+    (request `Connection` header, HTTP/1.0 without `Connection: keep-alive`, etc.).
 
     To finish sending the response, it is required to call `Session.send_finished()`
     to wrap things up, otherwise the server might misbehave.
