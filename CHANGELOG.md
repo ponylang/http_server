@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
+- Fix HTTP/1.0 connections not closing without keep-alive ([PR #19](https://github.com/ponylang/http_server/pull/19))
 
 ### Added
 
