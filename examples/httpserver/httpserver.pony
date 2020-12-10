@@ -161,6 +161,13 @@ class BackendHandler is Handler
       .set_status(StatusOK)
       .add_header("Content-Type", "text/plain")
       .add_header("Server", "http_server.pony/0.2.1")
+    // correctly handle HTTP/1.0 keep-alive
+    // TODO: move this handling to ServerConnection or ResponseBuilder
+    match (request.version(), request.header("Connection"))
+    | (HTTP10, "Keep-Alive") =>
+      header_builder = header_builder.add_header("Connection", "Keep-Alive")
+    end
+
     // if request is chunked, we also send the response in chunked Transfer
     // Encoding
     header_builder =
