@@ -95,6 +95,15 @@ actor Main
                               .set_status(StatusOK)
                               .set_transfer_encoding(request.transfer_coding())
                               .add_header("Content-Type", "text/plain")
+                              .add_header("Server", "http_server.pony/0.2.1")
+
+              // correctly handle HTTP/1.0 keep alive
+              // TODO: move this away from user responsibility
+              // into the lib
+              match (request.version(), request.header("Connection"))
+              | (HTTP10, "Keep-Alive") =>
+                header_builder = header_builder.add_header("Connection", "Keep-Alive")
+              end
               // add a Content-Length header if we have no chunked Transfer
               // Encoding
               match request.transfer_coding()

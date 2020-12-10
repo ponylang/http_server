@@ -58,6 +58,8 @@ actor _ServerConnection is Session
       _close_after = request_id
     | (HTTP10, let connection_header: String) if connection_header != "Keep-Alive" =>
       _close_after = request_id
+    | (HTTP10, None) =>
+      _close_after = request_id
     end
     _backend(request, request_id)
     if _pending_responses.size() >= _config.max_request_handling_lag then
@@ -173,6 +175,7 @@ actor _ServerConnection is Session
         break
       end
     end
+
     match _close_after
     | let close_after_me: RequestID if RequestIDs.gte(request_id, close_after_me) =>
       // only close after a request that requested it

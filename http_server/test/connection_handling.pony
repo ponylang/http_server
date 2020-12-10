@@ -8,6 +8,7 @@ primitive ConnectionHandlingTests is TestList
     test(ConnectionTimeoutTest)
     test(ConnectionCloseHeaderTest)
     test(ConnectionHTTP10Test)
+    test(ConnectionHTTP10DefaultCloseTest)
     test(ConnectionCloseHeaderResponseTest)
     test(ConnectionCloseHeaderRawResponseTest)
 
@@ -229,7 +230,7 @@ class iso ConnectionHTTP10Test is UnitTest
   test that connection is closed when HTTP version is 1.0
   and no 'Connection: keep-alive' is given.
   """
-  fun name(): String => "connection/no_keep_alive"
+  fun name(): String => "connection/http10/no_keep_alive"
 
   fun apply(h: TestHelper) ? =>
     h.long_test(Nanos.from_seconds(5))
@@ -263,3 +264,42 @@ class iso ConnectionHTTP10Test is UnitTest
       )
     )
 
+class iso ConnectionHTTP10DefaultCloseTest is UnitTest
+  """
+  Test that connection is closed when HTTP version is 1.0
+  and not "Connection" header is given.
+  """
+
+  fun name(): String => "connection/http10/no_connection_header"
+
+  fun apply(h: TestHelper) ? =>
+    h.long_test(Nanos.from_seconds(5))
+    h.expect_action("request-received")
+    h.expect_action("connection-closed")
+    h.dispose_when_done(
+      Server(
+        h.env.root as TCPListenerAuth,
+        object iso is ServerNotify
+          fun ref listening(server: Server ref) =>
+            try
+              (let host, let port) = server.local_address().name()?
+              h.log("listening on " + host + ":" + port)
+              TCPConnection(
+                h.env.root as AmbientAuth,
+                object iso is TCPConnectionNotify
+                  fun ref connected(conn: TCPConnection ref) =>
+                    conn.write("GET / HTTP/1.0\r\nContent-Length: 0\r\n\r\n")
+                  fun ref connect_failed(conn: TCPConnection ref) =>
+                    h.fail("connect failed")
+                end,
+                host,
+                port
+              )
+            end
+          fun ref closed(server: Server ref) =>
+            h.fail("closed")
+        end,
+        _ClosedTestHandlerFactory(h),
+        ServerConfig()
+      )
+    )
