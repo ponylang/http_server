@@ -13,24 +13,24 @@ interface Handler
 
   ### Receiving Requests
 
-  When an [Request](http-Request.md) is received on an [Session](http-Session.md) actor,
-  the corresponding [Handler.apply](http-Handler.md#apply) method is called
-  with the request and a [RequestID](http-RequestID). The [Request](http-Request.md)
+  When an [Request](http_server-Request.md) is received on an [Session](http_server-Session.md) actor,
+  the corresponding [Handler.apply](http_server-Handler.md#apply) method is called
+  with the request and a [RequestID](http_server-RequestID). The [Request](http_server-Request.md)
   contains the information extracted from HTTP Headers and the Request Line, but it does not
-  contain any body data. It is sent to [Handler.apply](http-Handler.md#apply) before the body
+  contain any body data. It is sent to [Handler.apply](http_server-Handler.md#apply) before the body
   is fully received.
 
-  If the request has a body, its raw data is sent to the [Handler.chunk](http-Handler.md#chunk) method
-  together with the [RequestID](http-RequestID.md) of the request it belongs to.
+  If the request has a body, its raw data is sent to the [Handler.chunk](http_server-Handler.md#chunk) method
+  together with the [RequestID](http_server-RequestID.md) of the request it belongs to.
 
-  Once all body data is received, [Handler.finished](http-Handler.md#finished) is called with the
-  [RequestID](http-RequestID.md) of the request it belongs to. Now is the time to act on the full body data,
+  Once all body data is received, [Handler.finished](http_server-Handler.md#finished) is called with the
+  [RequestID](http_server-RequestID.md) of the request it belongs to. Now is the time to act on the full body data,
   if it hasn't been processed yet.
 
-  The [RequestID](http-Requestid.md) must be kept around for sending the response for this request.
+  The [RequestID](http_server-Requestid.md) must be kept around for sending the response for this request.
   This way the session can ensure, all responses are sent in the same order as they have been received,
   which is required for HTTP pipelining. This way processing responses can be passed to other actors and
-  processing can take arbitrary times. The [Session](http-Session.md) will take care of sending
+  processing can take arbitrary times. The [Session](http_server-Session.md) will take care of sending
   the responses in the correct order.
 
   It is guaranteed that the call sequence is always:
@@ -46,19 +46,19 @@ interface Handler
 
   #### Failures and Cancelling
 
-  If a [Session](http-Session.md) experienced faulty requests, the [Handler](http-Handler.md)
-  is notified via [Handler.failed](http-Handler.md#failed).
+  If a [Session](http_server-Session.md) experienced faulty requests, the [Handler](http_server-Handler.md)
+  is notified via [Handler.failed](http_server-Handler.md#failed).
 
-  If the underlying connection to a [Session](http-Session.md) has been closed,
-  the [Handler](http-Handler.md) is notified via [Handler.closed](http-Handler.md#closed).
+  If the underlying connection to a [Session](http_server-Session.md) has been closed,
+  the [Handler](http_server-Handler.md) is notified via [Handler.closed](http_server-Handler.md#closed).
 
   ### Sending Responses
 
-  A handler is instantiated using a [HandlerFactory](http-HandlerFactory.md), which passes an instance of
-  [Session](http-Session.md) to be used in constructing a handler.
+  A handler is instantiated using a [HandlerFactory](http_server-HandlerFactory.md), which passes an instance of
+  [Session](http_server-Session.md) to be used in constructing a handler.
 
   A Session is required to be able to send responses.
-  See the docs for [Session](http-Session.md) for ways to send responses.
+  See the docs for [Session](http_server-Session.md) for ways to send responses.
 
   Example Handler:
 
@@ -163,10 +163,10 @@ interface HandlerFactory
 
   fun apply(session: Session): Handler ref^
     """
-    Called by the [Session](http-Session.md) when it needs a new instance of the
-    application's [Handler](http-Handler.md). It is suggested that the
+    Called by the [Session](http_server-Session.md) when it needs a new instance of the
+    application's [Handler](http_server-Handler.md). It is suggested that the
     `session` value be passed to the constructor for the new
-    [Handler](http-Handler.md), you will need it for sending stuff back.
+    [Handler](http_server-Handler.md), you will need it for sending stuff back.
 
     This part must be implemented, as there might be more paramaters
     that need to be passed for creating a Handler.
@@ -174,7 +174,7 @@ interface HandlerFactory
 
 interface HandlerWithoutContext is Handler
   """
-  Simple [Handler](http-Handler.md) that can be constructed
+  Simple [Handler](http_server-Handler.md) that can be constructed
   with only a Session.
   """
   new create(session: Session)
