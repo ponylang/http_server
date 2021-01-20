@@ -9,18 +9,18 @@ interface tag Session
   An HTTP Session lives as long as the underlying TCP connection and receives
   request data from it and writes response data to it.
 
-  Receiving data and parsing this data into [Request](http-Request.md)s is happening on
-  the TCPConnection actor. The [Session](http-Session.md) actor is started when a new TCPConnection
+  Receiving data and parsing this data into [Request](http_server-Request.md)s is happening on
+  the TCPConnection actor. The [Session](http_server-Session.md) actor is started when a new TCPConnection
   is accepted, and shut down, when the connection is closed.
 
   ### Receiving a Request
 
   As part of the Request-Response handling internal to this HTTP library,
-  a Session is instantiated that forwards requests to a [Handler](http-Handler.md),
+  a Session is instantiated that forwards requests to a [Handler](http_server-Handler.md),
   to actual application code, which in turn sends Responses back to the Session instance
-  it was instantiated with (See [HandlerFactory](http-HandlerFactory.md).
+  it was instantiated with (See [HandlerFactory](http_server-HandlerFactory.md).
 
-  See [Handler](http-Handler.md) on how requests are received by application code.
+  See [Handler](http_server-Handler.md) on how requests are received by application code.
 
   ### Sending a Response
 
@@ -34,10 +34,10 @@ interface tag Session
     Start receiving a request.
 
     This will be called when all headers of an incoming request have been parsed.
-    [Request](http-Request.md) contains all information extracted from
+    [Request](http_server-Request.md) contains all information extracted from
     these parts.
 
-    The [RequestID](http-RequestID.md) is passed in order for the Session
+    The [RequestID](http_server-RequestID.md) is passed in order for the Session
     implementation to maintain the correct request order in case of HTTP pipelining.
     Response handling can happen asynchronously at arbitrary times, so the RequestID
     helps us to get the responses back into the right order, no matter how they
@@ -184,7 +184,7 @@ interface tag Session
     This API uses the [TCPConnection.writev](net-TCPConnection.md#writev) method to
     optimize putting the given bytes out to the wire.
 
-    To make this optimized path more usable, this library provides the [ResponseBuilder](http-ResponseBuilder.md),
+    To make this optimized path more usable, this library provides the [ResponseBuilder](http_server-ResponseBuilder.md),
     which builds up a response into a [ByteSeqIter](builtin-ByteSeqIter.md), thus taylored towards
     being used with this API.
 

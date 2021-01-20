@@ -20,7 +20,7 @@ primitive Responses // TODO: better naming
   """
   fun builder(version: Version = HTTP11): ResponseBuilder =>
     """
-    Official way to get a reusable [ResponseBuilder](http-ResponseBuilder.md)
+    Official way to get a reusable [ResponseBuilder](http_server-ResponseBuilder.md)
     to build your responses efficiently.
     """
     _FullResponseBuilder._create(version)
@@ -30,17 +30,17 @@ interface ResponseBuilder
   Basic interface for a ResponseBuilder that can be used with chaining method calls.
   It enforces a strict order of build steps by only making the next step available
   as a return to a function required to transition. E.g. You must call `set_status(...)`
-  in order to get back a [ResponseBuilderHeaders](http-ResponseBuilderHeaders.md) to add
+  in order to get back a [ResponseBuilderHeaders](http_server-ResponseBuilderHeaders.md) to add
   headers to the response. You need to call `finish_headers()` in order to
-  be able to add body data with [ResponseBuilderBody](http-ResponseBuilderBody.md).
+  be able to add body data with [ResponseBuilderBody](http_server-ResponseBuilderBody.md).
 
   You can always reset the builder to start out fresh from the beginning.
   Implementations may take advantage of `reset()` by returning itself here,
   allowing for object reuse.
 
-  Use [ResponseBuilderBody.build()](http-ResponseBuilderBody.md#build) to finally build the
+  Use [ResponseBuilderBody.build()](http_server-ResponseBuilderBody.md#build) to finally build the
   response into a [ByteSeqIter](builtin-ByteSeqIter.md),
-  taylored for use with [Session.send_raw()](http-Session.md#send_raw).
+  taylored for use with [Session.send_raw()](http_server-Session.md#send_raw).
 
   Example usage:
 
@@ -69,7 +69,7 @@ interface ResponseBuilderBody
     """
     Add some body data.
 
-    If Transfer-Encoding is set to [Chunked](http-Chunked.md) in [ResponseBuilderHeaders](http-ResponseBuilderHeaders.md)
+    If Transfer-Encoding is set to [Chunked](http_server-Chunked.md) in [ResponseBuilderHeaders](http_server-ResponseBuilderHeaders.md)
     each call to this function will take care of encoding every added array here in Chunked encoding.
     Add an empty array to add the finishing chunk..
     """
@@ -232,11 +232,11 @@ class val BuildableResponse is (Response & ByteSeqIter)
 
   or by using it as a ByteSeqIter.
 
-  This class exists if you want to use the verbose API of [Session](http-Session.md)
+  This class exists if you want to use the verbose API of [Session](http_server-Session.md)
   and brings lots of convenience, like getters and setters for all common properties.
 
-  If you are looking for a more efficient way to build responses, use a [ResponseBuilder](http-ResponseBuilder.md)
-  as it is returned from [Responses.builder()](http-Responses.md#builder), this class is not introspectable
+  If you are looking for a more efficient way to build responses, use a [ResponseBuilder](http_server-ResponseBuilder.md)
+  as it is returned from [Responses.builder()](http_server-Responses.md#builder), this class is not introspectable
   and only allows adding properties the way they are put on the serialized form in the request. E.g. you must first
   set the status and then the headers, not the other way around. But it makes for a more efficient API.
   """

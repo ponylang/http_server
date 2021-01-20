@@ -233,7 +233,7 @@ actor _ServerConnection is Session
   be send_raw(raw: ByteSeqIter, request_id: RequestID, close_session: Bool = false) =>
     """
     If you have your response already in bytes, and don't want to build an expensive
-    [Response](http-Response) object, use this method to send your [ByteSeqIter](builtin-ByteSeqIter).
+    [Response](http_server-Response) object, use this method to send your [ByteSeqIter](builtin-ByteSeqIter).
     This `raw` argument can contain only the response without body,
     in which case you can send the body chunks later on using `send_chunk`,
     or, to further optimize your writes to the network, it might already contain
