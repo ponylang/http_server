@@ -4,8 +4,6 @@ Pony package to build server applications for the HTTP protocol.
 
 ## Status
 
-[![Actions Status](https://github.com/ponylang/http_server/workflows/vs-ponyc-latest/badge.svg)](https://github.com/ponylang/http_server/actions)
-
 `http_server` is beta quality software that will change frequently. Expect breaking changes. That said, you should feel comfortable using it in your projects.
 
 ## Installation
