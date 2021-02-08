@@ -15,3 +15,7 @@ Pony package to build server applications for the HTTP protocol.
 * Execute `corral run -- ponyc` to compile your application
 
 Note: The `net_ssl` transitive dependency requires a C SSL library to be installed. Please see the [net_ssl installation instructions](https://github.com/ponylang/net_ssl#installation) for more information.
+
+## API Documentation
+
+[https://ponylang.github.io/http_server](https://ponylang.github.io/http_server)
