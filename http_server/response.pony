@@ -255,6 +255,7 @@ class val BuildableResponse is (Response & ByteSeqIter)
     _version = version'
     _transfer_coding = transfer_coding'
     _content_length = content_length'
+    set_content_length(content_length')
 
   fun version(): Version => _version
   fun ref set_version(v: Version): BuildableResponse ref =>
