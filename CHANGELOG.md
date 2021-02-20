@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
+- BuildableResponse: unify constructor and setter for content length ([PR #23](https://github.com/ponylang/http_server/pull/23))
 
 ### Added
 
