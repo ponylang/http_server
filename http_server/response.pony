@@ -244,47 +244,55 @@ class val BuildableResponse is (Response & ByteSeqIter)
   var _status: Status
   embed _headers: Headers = _headers.create()
   var _transfer_coding: (Chunked | None)
-  var _content_length: (USize | None)
+  var _content_length: (USize | None) = None
 
   new trn create(
     status': Status = StatusOK,
     version': Version = HTTP11,
     transfer_coding': (Chunked | None) = None,
-    content_length': (USize | None) = None) =>
+    content_length': (USize | None) = None)
+  =>
     _status = status'
     _version = version'
     _transfer_coding = transfer_coding'
-    _content_length = content_length'
     set_content_length(content_length')
 
   fun version(): Version => _version
+
   fun ref set_version(v: Version): BuildableResponse ref =>
     _version = v
     this
 
   fun status(): Status => _status
+
   fun ref set_status(s: Status): BuildableResponse ref =>
     _status = s
     this
 
   fun header(name: String): (String | None) => _headers.get(name)
+
   fun headers(): Iterator[Header] => _headers.values()
+
   fun ref add_header(name: String, value: String): BuildableResponse ref =>
     _headers.add(name, value)
     this
+
   fun ref set_header(name: String, value: String): BuildableResponse ref =>
     _headers.set(name, value)
     this
+
   fun ref clear_headers(): BuildableResponse ref =>
     _headers.clear()
     this
 
   fun transfer_coding(): (Chunked | None) => _transfer_coding
+
   fun ref set_transfer_coding(c: (Chunked | None)): BuildableResponse ref =>
     _transfer_coding = c
     this
 
   fun content_length(): (USize | None) => _content_length
+
   fun ref set_content_length(cl: (USize | None)): BuildableResponse ref =>
     _content_length = cl
     match cl
@@ -341,5 +349,3 @@ class val BuildableResponse is (Response & ByteSeqIter)
   fun tag _format_multiline(header_value: String): String =>
     // TODO
     header_value
-
-
