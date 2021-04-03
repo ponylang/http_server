@@ -1,16 +1,18 @@
 use "ponytest"
-use ".."
-use "time"
 use "net"
+use "time"
 
-primitive ConnectionHandlingTests is TestList
+actor _ConnectionHandlingTests is TestList
+  new make() =>
+    None
+
   fun tag tests(test: PonyTest) =>
-    test(ConnectionTimeoutTest)
-    test(ConnectionCloseHeaderTest)
-    test(ConnectionHTTP10Test)
-    test(ConnectionHTTP10DefaultCloseTest)
-    test(ConnectionCloseHeaderResponseTest)
-    test(ConnectionCloseHeaderRawResponseTest)
+    test(_ConnectionTimeoutTest)
+    test(_ConnectionCloseHeaderTest)
+    test(_ConnectionHTTP10Test)
+    test(_ConnectionHTTP10DefaultCloseTest)
+    test(_ConnectionCloseHeaderResponseTest)
+    test(_ConnectionCloseHeaderRawResponseTest)
 
 class val _ClosedTestHandlerFactory is HandlerFactory
   let _h: TestHelper
@@ -39,7 +41,7 @@ class val _ClosedTestHandlerFactory is HandlerFactory
     end
 
 
-class iso ConnectionTimeoutTest is UnitTest
+class iso _ConnectionTimeoutTest is UnitTest
   """
   test that connection is closed when `connection_timeout` is set to `> 0`.
   """
@@ -80,7 +82,7 @@ class iso ConnectionTimeoutTest is UnitTest
       )
     )
 
-class iso ConnectionCloseHeaderTest is UnitTest
+class iso _ConnectionCloseHeaderTest is UnitTest
   """
   test that connection is closed when 'Connection: close' header
   was sent, even if we didn't specify a timeout.
@@ -120,7 +122,7 @@ class iso ConnectionCloseHeaderTest is UnitTest
       )
     )
 
-class iso ConnectionCloseHeaderResponseTest is UnitTest
+class iso _ConnectionCloseHeaderResponseTest is UnitTest
   """
   test that connection is closed when the application returned a 'Connection: close'
   header.
@@ -172,7 +174,7 @@ class iso ConnectionCloseHeaderResponseTest is UnitTest
       )
     )
 
-class iso ConnectionCloseHeaderRawResponseTest is UnitTest
+class iso _ConnectionCloseHeaderRawResponseTest is UnitTest
   fun name(): String => "connection/connection_close_raw_response"
 
   fun apply(h: TestHelper) ? =>
@@ -225,7 +227,7 @@ class iso ConnectionCloseHeaderRawResponseTest is UnitTest
       )
     )
 
-class iso ConnectionHTTP10Test is UnitTest
+class iso _ConnectionHTTP10Test is UnitTest
   """
   test that connection is closed when HTTP version is 1.0
   and no 'Connection: keep-alive' is given.
@@ -264,12 +266,11 @@ class iso ConnectionHTTP10Test is UnitTest
       )
     )
 
-class iso ConnectionHTTP10DefaultCloseTest is UnitTest
+class iso _ConnectionHTTP10DefaultCloseTest is UnitTest
   """
   Test that connection is closed when HTTP version is 1.0
   and not "Connection" header is given.
   """
-
   fun name(): String => "connection/http10/no_connection_header"
 
   fun apply(h: TestHelper) ? =>

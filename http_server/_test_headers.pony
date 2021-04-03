@@ -1,15 +1,16 @@
-use ".."
-use "ponytest"
-use "ponycheck"
-use "valbytes"
 use "debug"
+use "ponycheck"
+use "ponytest"
+use "valbytes"
 
+actor _HeaderTests is TestList
+  new make() =>
+    None
 
-primitive HeaderTests is TestList
   fun tag tests(test: PonyTest) =>
-    test(Property1UnitTest[Array[Header]](HeadersGetProperty))
+    test(Property1UnitTest[Array[Header]](_HeadersGetProperty))
 
-class iso HeadersGetProperty is Property1[Array[Header]]
+class iso _HeadersGetProperty is Property1[Array[Header]]
   fun name(): String => "headers/get/property"
 
   fun gen(): Generator[Array[Header]] =>
@@ -45,5 +46,3 @@ class iso HeadersGetProperty is Property1[Array[Header]]
         end
       end
     end
-
-

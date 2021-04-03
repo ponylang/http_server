@@ -1,11 +1,13 @@
 use "ponytest"
-use ".."
 
-primitive ResponseTests is TestList
+actor _ResponseTests is TestList
+  new make() =>
+    None
+
   fun tag tests(test: PonyTest) =>
-    test(BuildableResponseTest)
+    test(_BuildableResponseTest)
 
-class iso BuildableResponseTest is UnitTest
+class iso _BuildableResponseTest is UnitTest
   fun name(): String => "responses/BuildableResponse"
 
   fun apply(h: TestHelper) ? =>
