@@ -7,8 +7,19 @@ use "valbytes"
 use "buffered"
 use "time"
 
-primitive PrivateHTTPTests is TestList
+actor Main is TestList
+  new create(env: Env) => PonyTest(env, this)
+
+  new make() => None
+
   fun tag tests(test: PonyTest) =>
+    _ServerErrorHandlingTests.make().tests(test)
+    _RequestParserTests.make().tests(test)
+    _HeaderTests.make().tests(test)
+    _ConnectionHandlingTests.make().tests(test)
+    _PipeliningTests.make().tests(test)
+    _ResponseTests.make().tests(test)
+
     test(_Encode)
     test(_EncodeBad)
     test(_EncodeIPv6)
@@ -367,7 +378,6 @@ primitive _Test
     h.assert_eq[String](query, url.query)
     h.assert_eq[String](fragment, url.fragment)
 
-
 class iso _PendingResponsesTest is Property1[Array[(RequestID, Array[U8] val)]]
   let num_pending: USize = 100
   fun name(): String => "http/_pending_responses/property"
@@ -387,7 +397,6 @@ class iso _PendingResponsesTest is Property1[Array[(RequestID, Array[U8] val)]]
       Iter[(RequestID, Array[U8] val)](iter).collect(Array[(RequestID, Array[U8] val)](num_pending))
     })
     shuffled_array_gen
-
 
   fun property(sample: Array[(RequestID, Array[U8] val)], h: PropertyHelper) =>
     let pending_resp = _PendingResponses

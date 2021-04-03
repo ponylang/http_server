@@ -1,12 +1,14 @@
-use ".."
-use "ponytest"
+use "files"
 use "net"
 use "net_ssl"
-use "files"
+use "ponytest"
 
-primitive ServerErrorHandlingTests is TestList
+actor _ServerErrorHandlingTests is TestList
+  new make() =>
+    None
+
   fun tag tests(test: PonyTest) =>
-    test(ServerConnectionClosedTest)
+    test(_ServerConnectionClosedTest)
 
 class val _ServerConnectionClosedHandlerFactory is HandlerFactory
   let _h: TestHelper
@@ -21,7 +23,7 @@ class val _ServerConnectionClosedHandlerFactory is HandlerFactory
         _h.complete_action("server failed with ConnectionClosed")
     end
 
-class iso ServerConnectionClosedTest is UnitTest
+class iso _ServerConnectionClosedTest is UnitTest
   fun name(): String => "server/error-handling/connection-closed"
   fun apply(h: TestHelper) ? =>
     h.long_test(5_000_000_000)

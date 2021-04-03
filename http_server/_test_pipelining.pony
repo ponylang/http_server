@@ -1,14 +1,16 @@
-use "ponytest"
-use ".."
-use "time"
 use "net"
+use "time"
+use "ponytest"
 use "random"
 use "valbytes"
 
-primitive PipeliningTests is TestList
+actor _PipeliningTests is TestList
+  new make() =>
+    None
+
   fun tag tests(test: PonyTest) =>
-    test(PipeliningOrderTest)
-    test(PipeliningCloseTest)
+    test(_PipeliningOrderTest)
+    test(_PipeliningCloseTest)
 
 
 class val _PipeliningOrderHandlerFactory is HandlerFactory
@@ -48,7 +50,7 @@ class val _PipeliningOrderHandlerFactory is HandlerFactory
         )
     end
 
-class iso PipeliningOrderTest is UnitTest
+class iso _PipeliningOrderTest is UnitTest
   let requests: Array[String] val = [
     "GET / HTTP/1.1\r\nContent-Length: 1\r\n\r\n1"
     "POST /path?query=param%20eter HTTP/1.1\r\nContent-Length: 1\r\n\r\n2"
@@ -134,7 +136,7 @@ class iso PipeliningOrderTest is UnitTest
     )
 
 
-class iso PipeliningCloseTest is UnitTest
+class iso _PipeliningCloseTest is UnitTest
   """
   Test that connection is closed after handling a request
   with "Connection: close" header, not earlier, not later.
@@ -220,5 +222,3 @@ class iso PipeliningCloseTest is UnitTest
         ServerConfig()
       )
     )
-
-

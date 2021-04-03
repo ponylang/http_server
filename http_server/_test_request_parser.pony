@@ -1,15 +1,17 @@
-use ".."
 use "debug"
+use "itertools"
 use "ponytest"
 use "valbytes"
-use "itertools"
 
-primitive RequestParserTests is TestList
+actor _RequestParserTests is TestList
+  new make() =>
+    None
+
   fun tag tests(test: PonyTest) =>
-    test(NoDataTest)
-    test(UnknownMethodTest)
+    test(_NoDataTest)
+    test(_UnknownMethodTest)
     test(
-      ParserTestBuilder.parse_success(
+      _ParserTestBuilder.parse_success(
         "simple",
         _R(
           """
@@ -32,7 +34,7 @@ primitive RequestParserTests is TestList
       )
     )
     test(
-      ParserTestBuilder.parse_success(
+      _ParserTestBuilder.parse_success(
         "no-headers",
         _R(
           """
@@ -51,7 +53,7 @@ primitive RequestParserTests is TestList
       )
     )
     test(
-      ParserTestBuilder.parse_success(
+      _ParserTestBuilder.parse_success(
         "no-body",
         _R(
           """
@@ -76,49 +78,49 @@ primitive RequestParserTests is TestList
         }
       )
     )
-    test(ParserTestBuilder.need_more("method", _R("""POS""")))
-    test(ParserTestBuilder.need_more("no-url", _R("""GET  """)))
-    test(ParserTestBuilder.need_more("url", _R("""GET   /""")))
-    test(ParserTestBuilder.need_more("http-version-1", _R("""GET   / HTTP/""")))
-    test(ParserTestBuilder.need_more("request-line", _R("""GET   / HTTP/1.1""")))
-    test(ParserTestBuilder.need_more("no-headers",
+    test(_ParserTestBuilder.need_more("method", _R("""POS""")))
+    test(_ParserTestBuilder.need_more("no-url", _R("""GET  """)))
+    test(_ParserTestBuilder.need_more("url", _R("""GET   /""")))
+    test(_ParserTestBuilder.need_more("http-version-1", _R("""GET   / HTTP/""")))
+    test(_ParserTestBuilder.need_more("request-line", _R("""GET   / HTTP/1.1""")))
+    test(_ParserTestBuilder.need_more("no-headers",
         _R(
           """
           GET   / HTTP/1.1
           """)
     ))
-    test(ParserTestBuilder.need_more("header-name",
+    test(_ParserTestBuilder.need_more("header-name",
         _R(
           """
           GET   / HTTP/1.1
           Header""")
     ))
-    test(ParserTestBuilder.need_more("header-sep",
+    test(_ParserTestBuilder.need_more("header-sep",
         _R(
           """
           GET   / HTTP/1.1
           Header:""")
     ))
-    test(ParserTestBuilder.need_more("header-sep-ws",
+    test(_ParserTestBuilder.need_more("header-sep-ws",
         _R(
           """
           GET   / HTTP/1.1
           Header:  """)
     ))
-    test(ParserTestBuilder.need_more("header",
+    test(_ParserTestBuilder.need_more("header",
         _R(
           """
           GET   / HTTP/1.1
           Header:  Value""")
     ))
-    test(ParserTestBuilder.need_more("header-multi-line",
+    test(_ParserTestBuilder.need_more("header-multi-line",
         _R(
           """
           GET   / HTTP/1.1
           Header:  Value
            MultiLine""")
     ))
-    test(ParserTestBuilder.need_more("header-eoh",
+    test(_ParserTestBuilder.need_more("header-eoh",
         _R(
           """
           GET   / HTTP/1.1
@@ -127,7 +129,7 @@ primitive RequestParserTests is TestList
           Header2: Foo
           """)
     ))
-    test(ParserTestBuilder.need_more("body",
+    test(_ParserTestBuilder.need_more("body",
         _R(
           """
           GET   / HTTP/1.1
@@ -136,7 +138,7 @@ primitive RequestParserTests is TestList
           """)
         where ok_to_finish = true
     ))
-    test(ParserTestBuilder.need_more("body-2",
+    test(_ParserTestBuilder.need_more("body-2",
         _R(
           """
           GET   / HTTP/1.1
@@ -145,7 +147,7 @@ primitive RequestParserTests is TestList
           X""")
         where ok_to_finish = true
     ))
-    test(ParserTestBuilder.need_more("chunk-start",
+    test(_ParserTestBuilder.need_more("chunk-start",
         _R(
           """
           GET   / HTTP/1.1
@@ -154,7 +156,7 @@ primitive RequestParserTests is TestList
           A""")
         where ok_to_finish = true)
     )
-    test(ParserTestBuilder.need_more("chunk-start-extension",
+    test(_ParserTestBuilder.need_more("chunk-start-extension",
         _R(
           """
           GET   / HTTP/1.1
@@ -163,7 +165,7 @@ primitive RequestParserTests is TestList
           A;bla=blubb""")
         where ok_to_finish = true)
     )
-    test(ParserTestBuilder.need_more("chunk",
+    test(_ParserTestBuilder.need_more("chunk",
         _R(
           """
           GET   / HTTP/1.1
@@ -173,7 +175,7 @@ primitive RequestParserTests is TestList
           012345678""")
         where ok_to_finish = true)
     )
-    test(ParserTestBuilder.need_more("chunk-full",
+    test(_ParserTestBuilder.need_more("chunk-full",
         _R(
           """
           GET   / HTTP/1.1
@@ -184,7 +186,7 @@ primitive RequestParserTests is TestList
         where ok_to_finish = true
       )
     )
-    test(ParserTestBuilder.need_more("chunk-end",
+    test(_ParserTestBuilder.need_more("chunk-end",
         _R(
           """
           GET   / HTTP/1.1
@@ -195,7 +197,7 @@ primitive RequestParserTests is TestList
           """)
         where ok_to_finish = true)
     )
-    test(ParserTestBuilder.need_more("chunk-last",
+    test(_ParserTestBuilder.need_more("chunk-last",
         _R(
           """
           GET   / HTTP/1.1
@@ -228,7 +230,7 @@ actor _MockRequestHandler is HTTP11RequestHandler
   be _receive_failed(parse_error: RequestParseError, request_id: RequestID) =>
     Debug("_receive_failed: " + request_id.string())
 
-primitive ParserTestBuilder
+primitive _ParserTestBuilder
   fun parse_success(
     name': String,
     request': String,
@@ -298,7 +300,7 @@ primitive ParserTestBuilder
         h.assert_eq[String]("NeedMore", parser.parse(_ArrayHelpers.iso_array(req_str)).string())
     end
 
-class iso NoDataTest is UnitTest
+class iso _NoDataTest is UnitTest
   fun name(): String => "request_parser/no_data"
   fun apply(h: TestHelper) =>
     let parser = HTTP11RequestParser(
@@ -315,7 +317,7 @@ class iso NoDataTest is UnitTest
     )
     h.assert_is[ParseReturn](NeedMore, parser.parse(recover Array[U8](0) end))
 
-class iso UnknownMethodTest is UnitTest
+class iso _UnknownMethodTest is UnitTest
   fun name(): String => "request_parser/unknown_method"
   fun apply(h: TestHelper) =>
     let parser = HTTP11RequestParser(
