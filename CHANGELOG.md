@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 
 - Don't export test types ([PR #27](https://github.com/ponylang/http_server/pull/27))
+- Update net_ssl dependency ([PR #29](https://github.com/ponylang/http_server/pull/29))
 
 ## [0.2.4] - 2021-02-20
 
