@@ -319,7 +319,7 @@ class HTTP11RequestParser
                   return _headers_exhausted()
                 end
               end
-              (multi_line_value, hend)
+              (consume multi_line_value, hend)
 
             else
               // single line header, simple processing, in best case no
