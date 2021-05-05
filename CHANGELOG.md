@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Update to deal with changes to reference capabilities subtyping rules ([PR #30](https://github.com/ponylang/http_server/pull/30))
 
 ## [0.3.0] - 2021-04-10
 
