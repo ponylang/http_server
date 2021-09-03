@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
+- Update to work with ponyc 0.44.0 ([PR #31](https://github.com/ponylang/http_server/pull/31))
 
 ### Added
 
