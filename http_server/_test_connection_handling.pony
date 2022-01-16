@@ -47,20 +47,20 @@ class iso _ConnectionTimeoutTest is UnitTest
   """
   fun name(): String => "connection/timeout"
 
-  fun apply(h: TestHelper) ? =>
+  fun apply(h: TestHelper) =>
     h.long_test(Nanos.from_seconds(5))
     h.expect_action("request-received")
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root as TCPListenerAuth,
+        h.env.root,
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root as AmbientAuth,
+                h.env.root,
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
@@ -90,20 +90,20 @@ class iso _ConnectionCloseHeaderTest is UnitTest
 
   fun name(): String => "connection/connection_close_header"
 
-  fun apply(h: TestHelper) ? =>
+  fun apply(h: TestHelper) =>
     h.long_test(Nanos.from_seconds(5))
     h.expect_action("request-received")
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root as TCPListenerAuth,
+        h.env.root,
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root as AmbientAuth,
+                h.env.root,
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
@@ -129,20 +129,20 @@ class iso _ConnectionCloseHeaderResponseTest is UnitTest
   """
   fun name(): String => "connection/connection_close_response"
 
-  fun apply(h: TestHelper) ? =>
+  fun apply(h: TestHelper) =>
     h.long_test(Nanos.from_seconds(5))
     h.expect_action("request-received")
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root as TCPListenerAuth,
+        h.env.root,
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root as AmbientAuth,
+                h.env.root,
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
@@ -177,20 +177,20 @@ class iso _ConnectionCloseHeaderResponseTest is UnitTest
 class iso _ConnectionCloseHeaderRawResponseTest is UnitTest
   fun name(): String => "connection/connection_close_raw_response"
 
-  fun apply(h: TestHelper) ? =>
+  fun apply(h: TestHelper) =>
     h.long_test(Nanos.from_seconds(5))
     h.expect_action("request-received")
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root as TCPListenerAuth,
+        h.env.root,
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root as AmbientAuth,
+                h.env.root,
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
@@ -234,20 +234,20 @@ class iso _ConnectionHTTP10Test is UnitTest
   """
   fun name(): String => "connection/http10/no_keep_alive"
 
-  fun apply(h: TestHelper) ? =>
+  fun apply(h: TestHelper) =>
     h.long_test(Nanos.from_seconds(5))
     h.expect_action("request-received")
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root as TCPListenerAuth,
+        h.env.root,
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root as AmbientAuth,
+                h.env.root,
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.0\r\nContent-Length: 0\r\nConnection: blaaa\r\n\r\n")
@@ -273,20 +273,20 @@ class iso _ConnectionHTTP10DefaultCloseTest is UnitTest
   """
   fun name(): String => "connection/http10/no_connection_header"
 
-  fun apply(h: TestHelper) ? =>
+  fun apply(h: TestHelper) =>
     h.long_test(Nanos.from_seconds(5))
     h.expect_action("request-received")
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root as TCPListenerAuth,
+        h.env.root,
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root as AmbientAuth,
+                h.env.root,
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.0\r\nContent-Length: 0\r\n\r\n")

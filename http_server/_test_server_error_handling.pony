@@ -25,14 +25,14 @@ class val _ServerConnectionClosedHandlerFactory is HandlerFactory
 
 class iso _ServerConnectionClosedTest is UnitTest
   fun name(): String => "server/error-handling/connection-closed"
-  fun apply(h: TestHelper) ? =>
+  fun apply(h: TestHelper) =>
     h.long_test(5_000_000_000)
     h.expect_action("server listening")
     h.expect_action("client connected")
     h.expect_action("server failed with ConnectionClosed")
 
     let server = Server(
-      h.env.root as AmbientAuth,
+      h.env.root,
       object iso is ServerNotify
         let _h: TestHelper = h
         fun ref listening(server: Server ref) =>
@@ -43,7 +43,7 @@ class iso _ServerConnectionClosedTest is UnitTest
             _h.log("listening on " + host + ":" + port)
             let conn =
               TCPConnection(
-                _h.env.root as AmbientAuth,
+                _h.env.root,
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     _h.complete_action("client connected")

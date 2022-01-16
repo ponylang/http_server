@@ -20,16 +20,9 @@ actor Main
     let limit = try env.args(2)?.usize()? else 100 end
     let host = "localhost"
 
-    let auth = try
-      env.root as AmbientAuth
-    else
-      env.err.print("unable to use network")
-      return
-    end
-
     // Start the top server control actor.
     let server = Server(
-      auth,
+      env.root,
       LoggingServerNotify(env),
       // HandlerFactory - used to instantiate the session-scoped Handler
       {(session) =>
