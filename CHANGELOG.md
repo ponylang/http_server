@@ -2,17 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [unreleased] - unreleased
+## [0.3.3] - 2022-01-16
 
 ### Fixed
 
 - Update to work with Pony 0.46.0 ([PR #39](https://github.com/ponylang/http_server/pull/39))
-
-### Added
-
-
-### Changed
-
 
 ## [0.3.2] - 2021-09-03
 
