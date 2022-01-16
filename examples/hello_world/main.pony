@@ -18,17 +18,9 @@ actor Main
     let limit = try env.args(2)?.usize()? else 10000 end
     let host = "localhost"
 
-    // we need sufficient authority to listen on a TCP port for http traffic
-    let auth = try
-      env.root as AmbientAuth
-    else
-      env.out.print("unable to use network")
-      return
-    end
-
     // Start the top server control actor.
     let server = Server(
-      auth,
+      env.root,
       LoggingServerNotify(env),  // notify for server lifecycle events
       BackendMaker // factory for session-based application backend
       where config = ServerConfig( // configuration of Server

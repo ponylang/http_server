@@ -76,6 +76,6 @@ actor Main
   new create(env: Env) =>
     try
       let limit = env.args(2)?.usize()?
-      TCPListener(env.root as AmbientAuth,
+      TCPListener(env.root,
         recover MyTCPListenNotify end, "127.0.0.1", env.args(1)? where limit = limit)
     end
