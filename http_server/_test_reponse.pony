@@ -1,13 +1,13 @@
 use "ponytest"
 
-actor _ResponseTests is TestList
+actor \nodoc\ _ResponseTests is TestList
   new make() =>
     None
 
   fun tag tests(test: PonyTest) =>
     test(_BuildableResponseTest)
 
-class iso _BuildableResponseTest is UnitTest
+class \nodoc\ iso _BuildableResponseTest is UnitTest
   fun name(): String => "responses/BuildableResponse"
 
   fun apply(h: TestHelper) ? =>

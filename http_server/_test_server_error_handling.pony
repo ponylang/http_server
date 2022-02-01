@@ -3,14 +3,14 @@ use "net"
 use "net_ssl"
 use "ponytest"
 
-actor _ServerErrorHandlingTests is TestList
+actor \nodoc\ _ServerErrorHandlingTests is TestList
   new make() =>
     None
 
   fun tag tests(test: PonyTest) =>
     test(_ServerConnectionClosedTest)
 
-class val _ServerConnectionClosedHandlerFactory is HandlerFactory
+class \nodoc\ val _ServerConnectionClosedHandlerFactory is HandlerFactory
   let _h: TestHelper
   new val create(h: TestHelper) =>
     _h = h
@@ -23,7 +23,7 @@ class val _ServerConnectionClosedHandlerFactory is HandlerFactory
         _h.complete_action("server failed with ConnectionClosed")
     end
 
-class iso _ServerConnectionClosedTest is UnitTest
+class \nodoc\ iso _ServerConnectionClosedTest is UnitTest
   fun name(): String => "server/error-handling/connection-closed"
   fun apply(h: TestHelper) =>
     h.long_test(5_000_000_000)

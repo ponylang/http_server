@@ -2,7 +2,7 @@ use "ponytest"
 use "net"
 use "time"
 
-actor _ConnectionHandlingTests is TestList
+actor \nodoc\ _ConnectionHandlingTests is TestList
   new make() =>
     None
 
@@ -14,7 +14,7 @@ actor _ConnectionHandlingTests is TestList
     test(_ConnectionCloseHeaderResponseTest)
     test(_ConnectionCloseHeaderRawResponseTest)
 
-class val _ClosedTestHandlerFactory is HandlerFactory
+class \nodoc\ val _ClosedTestHandlerFactory is HandlerFactory
   let _h: TestHelper
 
   new val create(h: TestHelper) =>
@@ -41,7 +41,7 @@ class val _ClosedTestHandlerFactory is HandlerFactory
     end
 
 
-class iso _ConnectionTimeoutTest is UnitTest
+class \nodoc\ iso _ConnectionTimeoutTest is UnitTest
   """
   test that connection is closed when `connection_timeout` is set to `> 0`.
   """
@@ -82,7 +82,7 @@ class iso _ConnectionTimeoutTest is UnitTest
       )
     )
 
-class iso _ConnectionCloseHeaderTest is UnitTest
+class \nodoc\ iso _ConnectionCloseHeaderTest is UnitTest
   """
   test that connection is closed when 'Connection: close' header
   was sent, even if we didn't specify a timeout.
@@ -122,7 +122,7 @@ class iso _ConnectionCloseHeaderTest is UnitTest
       )
     )
 
-class iso _ConnectionCloseHeaderResponseTest is UnitTest
+class \nodoc\ iso _ConnectionCloseHeaderResponseTest is UnitTest
   """
   test that connection is closed when the application returned a 'Connection: close'
   header.
@@ -174,7 +174,7 @@ class iso _ConnectionCloseHeaderResponseTest is UnitTest
       )
     )
 
-class iso _ConnectionCloseHeaderRawResponseTest is UnitTest
+class \nodoc\ iso _ConnectionCloseHeaderRawResponseTest is UnitTest
   fun name(): String => "connection/connection_close_raw_response"
 
   fun apply(h: TestHelper) =>
@@ -227,7 +227,7 @@ class iso _ConnectionCloseHeaderRawResponseTest is UnitTest
       )
     )
 
-class iso _ConnectionHTTP10Test is UnitTest
+class \nodoc\ iso _ConnectionHTTP10Test is UnitTest
   """
   test that connection is closed when HTTP version is 1.0
   and no 'Connection: keep-alive' is given.
@@ -266,7 +266,7 @@ class iso _ConnectionHTTP10Test is UnitTest
       )
     )
 
-class iso _ConnectionHTTP10DefaultCloseTest is UnitTest
+class \nodoc\ iso _ConnectionHTTP10DefaultCloseTest is UnitTest
   """
   Test that connection is closed when HTTP version is 1.0
   and not "Connection" header is given.

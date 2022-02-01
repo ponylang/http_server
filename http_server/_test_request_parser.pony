@@ -3,7 +3,7 @@ use "itertools"
 use "ponytest"
 use "valbytes"
 
-actor _RequestParserTests is TestList
+actor \nodoc\ _RequestParserTests is TestList
   new make() =>
     None
 
@@ -210,14 +210,14 @@ actor _RequestParserTests is TestList
         where ok_to_finish = true)
     )
 
-primitive _R
+primitive \nodoc\ _R
   fun apply(s: String): String =>
     "\r\n".join(
       Iter[String](s.split_by("\n").values())
         .map[String]({(s) => s.clone().>strip("\r") })
     )
 
-actor _MockRequestHandler is HTTP11RequestHandler
+actor \nodoc\ _MockRequestHandler is HTTP11RequestHandler
   be _receive_start(request: Request val, request_id: RequestID) =>
     Debug("_receive_start: " + request_id.string())
 
@@ -230,7 +230,7 @@ actor _MockRequestHandler is HTTP11RequestHandler
   be _receive_failed(parse_error: RequestParseError, request_id: RequestID) =>
     Debug("_receive_failed: " + request_id.string())
 
-primitive _ParserTestBuilder
+primitive \nodoc\ _ParserTestBuilder
   fun parse_success(
     name': String,
     request': String,
@@ -300,7 +300,7 @@ primitive _ParserTestBuilder
         h.assert_eq[String]("NeedMore", parser.parse(_ArrayHelpers.iso_array(req_str)).string())
     end
 
-class iso _NoDataTest is UnitTest
+class \nodoc\ iso _NoDataTest is UnitTest
   fun name(): String => "request_parser/no_data"
   fun apply(h: TestHelper) =>
     let parser = HTTP11RequestParser(
@@ -317,7 +317,7 @@ class iso _NoDataTest is UnitTest
     )
     h.assert_is[ParseReturn](NeedMore, parser.parse(recover Array[U8](0) end))
 
-class iso _UnknownMethodTest is UnitTest
+class \nodoc\ iso _UnknownMethodTest is UnitTest
   fun name(): String => "request_parser/unknown_method"
   fun apply(h: TestHelper) =>
     let parser = HTTP11RequestParser(
@@ -337,6 +337,6 @@ class iso _UnknownMethodTest is UnitTest
       parser.parse(_ArrayHelpers.iso_array("ABC /"))
     )
 
-primitive _ArrayHelpers
+primitive \nodoc\ _ArrayHelpers
   fun tag iso_array(s: String): Array[U8] iso^ =>
     (recover iso String(s.size()).>append(s) end).iso_array()
