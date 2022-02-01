@@ -4,7 +4,7 @@ use "ponytest"
 use "random"
 use "valbytes"
 
-actor _PipeliningTests is TestList
+actor \nodoc\ _PipeliningTests is TestList
   new make() =>
     None
 
@@ -13,7 +13,7 @@ actor _PipeliningTests is TestList
     test(_PipeliningCloseTest)
 
 
-class val _PipeliningOrderHandlerFactory is HandlerFactory
+class \nodoc\ val _PipeliningOrderHandlerFactory is HandlerFactory
   let _h: TestHelper
   let _timers: Timers
 
@@ -50,7 +50,7 @@ class val _PipeliningOrderHandlerFactory is HandlerFactory
         )
     end
 
-class iso _PipeliningOrderTest is UnitTest
+class \nodoc\ iso _PipeliningOrderTest is UnitTest
   let requests: Array[String] val = [
     "GET / HTTP/1.1\r\nContent-Length: 1\r\n\r\n1"
     "POST /path?query=param%20eter HTTP/1.1\r\nContent-Length: 1\r\n\r\n2"
@@ -136,7 +136,7 @@ class iso _PipeliningOrderTest is UnitTest
     )
 
 
-class iso _PipeliningCloseTest is UnitTest
+class \nodoc\ iso _PipeliningCloseTest is UnitTest
   """
   Test that connection is closed after handling a request
   with "Connection: close" header, not earlier, not later.

@@ -3,14 +3,14 @@ use "ponycheck"
 use "ponytest"
 use "valbytes"
 
-actor _HeaderTests is TestList
+actor \nodoc\ _HeaderTests is TestList
   new make() =>
     None
 
   fun tag tests(test: PonyTest) =>
     test(Property1UnitTest[Array[Header]](_HeadersGetProperty))
 
-class iso _HeadersGetProperty is Property1[Array[Header]]
+class \nodoc\ iso _HeadersGetProperty is Property1[Array[Header]]
   fun name(): String => "headers/get/property"
 
   fun gen(): Generator[Array[Header]] =>
