@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Update to work with Pony 0.47.0 ([PR #42](https://github.com/ponylang/http_server/pull/42))
 
 ## [0.3.3] - 2022-01-16
 
