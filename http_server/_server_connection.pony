@@ -4,7 +4,7 @@ use "valbytes"
 use "debug"
 use "time"
 
-actor _ServerConnection is Session
+actor _ServerConnection is (Session & HTTP11RequestHandler)
   """
   Manages a stream of requests coming into a server from a single client,
   dispatches those request to a back-end, and returns the responses back

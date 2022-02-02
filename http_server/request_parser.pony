@@ -51,7 +51,7 @@ type _ParserState is (
 
 primitive Chunked
 
-interface tag HTTP11RequestHandler
+trait tag HTTP11RequestHandler
   """
   Downstream actor that is notified of parse results,
   be it a valid `Request` containing method, URL, headers and other metadata,

@@ -1,6 +1,6 @@
 use "valbytes"
 
-interface tag Session
+trait tag Session
   """
   An HTTP Session is the external API to the communication link
   between client and server.
