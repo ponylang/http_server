@@ -1,5 +1,5 @@
 use "../http_server"
-use "ponybench"
+use "pony_bench"
 use "debug"
 use "format"
 
