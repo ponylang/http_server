@@ -1,5 +1,5 @@
-use "ponycheck"
-use "ponytest"
+use "pony_check"
+use "pony_test"
 use "net"
 use "collections"
 use "itertools"

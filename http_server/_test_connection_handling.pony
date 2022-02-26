@@ -1,4 +1,4 @@
-use "ponytest"
+use "pony_test"
 use "net"
 use "time"
 
@@ -53,14 +53,14 @@ class \nodoc\ iso _ConnectionTimeoutTest is UnitTest
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
@@ -96,14 +96,14 @@ class \nodoc\ iso _ConnectionCloseHeaderTest is UnitTest
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
@@ -135,14 +135,14 @@ class \nodoc\ iso _ConnectionCloseHeaderResponseTest is UnitTest
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
@@ -183,14 +183,14 @@ class \nodoc\ iso _ConnectionCloseHeaderRawResponseTest is UnitTest
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.1\r\nContent-Length: 0\r\n\r\n")
@@ -240,14 +240,14 @@ class \nodoc\ iso _ConnectionHTTP10Test is UnitTest
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.0\r\nContent-Length: 0\r\nConnection: blaaa\r\n\r\n")
@@ -279,14 +279,14 @@ class \nodoc\ iso _ConnectionHTTP10DefaultCloseTest is UnitTest
     h.expect_action("connection-closed")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     conn.write("GET / HTTP/1.0\r\nContent-Length: 0\r\n\r\n")

@@ -1,4 +1,4 @@
-use "ponytest"
+use "pony_test"
 
 actor \nodoc\ _ResponseTests is TestList
   new make() =>

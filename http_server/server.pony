@@ -38,7 +38,7 @@ actor Server is _SessionRegistry
   var _timer: (Timer tag | None) = None
 
   new create(
-    auth: TCPListenerAuth,
+    auth: TCPListenAuth,
     notify: ServerNotify iso,
     handler: HandlerFactory val,
     config: ServerConfig,

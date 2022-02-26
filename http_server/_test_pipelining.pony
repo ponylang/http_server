@@ -1,6 +1,6 @@
 use "net"
 use "time"
-use "ponytest"
+use "pony_test"
 use "random"
 use "valbytes"
 
@@ -65,7 +65,7 @@ class \nodoc\ iso _PipeliningOrderTest is UnitTest
     h.expect_action("all received")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           let reqs: Array[String] val = requests
           fun ref listening(server: Server ref) =>
@@ -73,7 +73,7 @@ class \nodoc\ iso _PipeliningOrderTest is UnitTest
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   var buffer: ByteArrays = ByteArrays
                   var order: Array[USize] iso = recover iso Array[USize](5) end
@@ -149,14 +149,14 @@ class \nodoc\ iso _PipeliningCloseTest is UnitTest
     h.expect_action("all received")
     h.dispose_when_done(
       Server(
-        h.env.root,
+        TCPListenAuth(h.env.root),
         object iso is ServerNotify
           fun ref listening(server: Server ref) =>
             try
               (let host, let port) = server.local_address().name()?
               h.log("listening on " + host + ":" + port)
               TCPConnection(
-                h.env.root,
+                TCPConnectAuth(h.env.root),
                 object iso is TCPConnectionNotify
                   var buffer: ByteArrays = ByteArrays
                   var order: Array[USize] iso = recover iso Array[USize](5) end

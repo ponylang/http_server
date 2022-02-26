@@ -1,4 +1,5 @@
 use "../../http_server"
+use "net"
 use "valbytes"
 use "debug"
 
@@ -20,7 +21,7 @@ actor Main
 
     // Start the top server control actor.
     let server = Server(
-      env.root,
+      TCPListenAuth(env.root),
       LoggingServerNotify(env),  // notify for server lifecycle events
       BackendMaker // factory for session-based application backend
       where config = ServerConfig( // configuration of Server
