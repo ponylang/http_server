@@ -14,7 +14,7 @@ actor Main is BenchmarkList
     bench(_MultipartFileUploadBenchmark)
     bench(_ChunkedRequestBenchmark)
 
-actor _TestSession is Session
+actor _TestSession is (Session & HTTP11RequestHandler)
   var _c: (AsyncBenchContinue | None) = None
 
   be set_continue(c: AsyncBenchContinue) =>
