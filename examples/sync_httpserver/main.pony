@@ -1,4 +1,5 @@
 use "../../http_server"
+use "net"
 use "time"
 use "valbytes"
 
@@ -22,7 +23,7 @@ actor Main
 
     // Start the top server control actor.
     let server = Server(
-      env.root,
+      TCPListenAuth(env.root),
       LoggingServerNotify(env),
       // HandlerFactory - used to instantiate the session-scoped Handler
       {(session) =>

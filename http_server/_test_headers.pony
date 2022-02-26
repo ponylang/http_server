@@ -1,6 +1,6 @@
 use "debug"
-use "ponycheck"
-use "ponytest"
+use "pony_check"
+use "pony_test"
 use "valbytes"
 
 actor \nodoc\ _HeaderTests is TestList

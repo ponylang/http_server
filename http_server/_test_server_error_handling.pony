@@ -1,7 +1,7 @@
 use "files"
 use "net"
 use "net_ssl"
-use "ponytest"
+use "pony_test"
 
 actor \nodoc\ _ServerErrorHandlingTests is TestList
   new make() =>
@@ -32,7 +32,7 @@ class \nodoc\ iso _ServerConnectionClosedTest is UnitTest
     h.expect_action("server failed with ConnectionClosed")
 
     let server = Server(
-      h.env.root,
+      TCPListenAuth(h.env.root),
       object iso is ServerNotify
         let _h: TestHelper = h
         fun ref listening(server: Server ref) =>
@@ -43,7 +43,7 @@ class \nodoc\ iso _ServerConnectionClosedTest is UnitTest
             _h.log("listening on " + host + ":" + port)
             let conn =
               TCPConnection(
-                _h.env.root,
+                TCPConnectAuth(_h.env.root),
                 object iso is TCPConnectionNotify
                   fun ref connected(conn: TCPConnection ref) =>
                     _h.complete_action("client connected")

@@ -1,6 +1,6 @@
 use "debug"
 use "itertools"
-use "ponytest"
+use "pony_test"
 use "valbytes"
 
 actor \nodoc\ _RequestParserTests is TestList
