@@ -78,7 +78,7 @@ actor _ServerConnection is (Session & HTTP11RequestHandler)
 
   be _receive_finished(request_id: RequestID) =>
     """
-    Inidcates that the last *inbound* body chunk has been sent to
+    Indicates that the last *inbound* body chunk has been sent to
     `_chunk`. This is passed on to the back end.
     """
     _backend.finished(request_id)
