@@ -5,6 +5,3 @@ tags
 /.coverage/
 /_corral/
 /_repos/
-
-# IDEs
-/.vscode/
