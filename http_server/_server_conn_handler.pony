@@ -3,10 +3,11 @@ use "debug"
 
 class _ServerConnHandler is TCPConnectionNotify
   """
-  This is the network notification handler for the server. It uses
-  `PayloadBuilder` to assemble request `Payload` objects using received
-  chunks of data. Functions in this class execute within the
-  `TCPConnection` actor.
+  This is the network notification handler for the server.
+  It handles I/O for a single HTTP connection (which includes at least
+  one HTTP request, and possibly more with Keep-Alive). It parses HTTP
+  requests and forwards them to the session it is bound to.
+  Functions in this class execute within the `TCPConnection` actor.
   """
   let _handlermaker: HandlerFactory val
   let _registry: _SessionRegistry tag
@@ -32,7 +33,6 @@ class _ServerConnHandler is TCPConnectionNotify
     Accept the incoming TCP connection and create the actor that will
     manage further communication, and the message parser that feeds it.
     """
-
     let sconn = _ServerConnection(_handlermaker, _config, conn)
     _registry.register_session(sconn)
     _session = sconn
