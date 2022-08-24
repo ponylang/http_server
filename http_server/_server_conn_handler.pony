@@ -13,7 +13,6 @@ class _ServerConnHandler is TCPConnectionNotify
   let _registry: _SessionRegistry tag
   let _config: ServerConfig
 
-  var _parser: (HTTP11RequestParser | None) = None
   var _session: (_ServerConnection | None) = None
 
   new iso create(
@@ -36,7 +35,6 @@ class _ServerConnHandler is TCPConnectionNotify
     let sconn = _ServerConnection(_handlermaker, _config, conn)
     _registry.register_session(sconn)
     _session = sconn
-    _parser = HTTP11RequestParser.create(sconn)
 
   fun ref received(
     conn: TCPConnection ref,
@@ -51,18 +49,8 @@ class _ServerConnHandler is TCPConnectionNotify
     // TODO: inactivity timer
     // add a "reset" API to Timers
 
-    match _parser
-    | let b: HTTP11RequestParser =>
-      // Let the parser take a look at what has been received.
-      let res = b.parse(consume data)
-      match res
-      // Any syntax errors will terminate the connection.
-      | let rpe: RequestParseError =>
-        Debug("Parser: RPE")
-        conn.close()
-      | NeedMore =>
-        Debug("Parser: NeedMore")
-      end
+    match _session
+    | let s: _ServerConnection => s.received(consume data)
     end
     true
 

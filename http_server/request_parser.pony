@@ -51,21 +51,47 @@ type _ParserState is (
 
 primitive Chunked
 
-trait tag HTTP11RequestHandler
+trait ref HTTP11RequestHandler
   """
   Downstream actor that is notified of parse results,
   be it a valid `Request` containing method, URL, headers and other metadata,
   or a specific `RequestParseError`.
   """
-  be _receive_start(request: Request val, request_id: RequestID)
+  fun ref _receive_start(request: Request val, request_id: RequestID) =>
     """
-    Receive parsed Request
+    Start receiving a request.
+
+    This will be called when all headers of an incoming request have been parsed.
+    [Request](http_server-Request.md) contains all information extracted from
+    these parts.
+
+    The [RequestID](http_server-RequestID.md) is passed in order for the Session
+    implementation to maintain the correct request order in case of HTTP pipelining.
+    Response handling can happen asynchronously at arbitrary times, so the RequestID
+    helps us to get the responses back into the right order, no matter how they
+    are received from the application.
     """
 
-  be _receive_chunk(data: Array[U8] val, request_id: RequestID)
-  be _receive_finished(request_id: RequestID)
+  fun ref _receive_chunk(data: Array[U8] val, request_id: RequestID) =>
+    """
+    Receive a chunk of body data for the request identified by `request_id`.
 
-  be _receive_failed(parse_error: RequestParseError, request_id: RequestID)
+    The body is split up into arbitrarily sized data chunks, whose size is determined by the
+    underlying protocol mechanisms, not the actual body size.
+    """
+
+  fun ref _receive_finished(request_id: RequestID) =>
+    """
+    Indicate that the current inbound request, including the body, has been fully received.
+    """
+
+  fun ref _receive_failed(parse_error: RequestParseError, request_id: RequestID) =>
+    """
+    Nofitcation if the request parser failed to parse incoming data as Request.
+
+    Ignored by default.
+    """
+
 
 class HTTP11RequestParser
   let _max_request_line_size: USize = 8192 // TODO make configurable
@@ -524,5 +550,3 @@ primitive CompareCaseInsensitive
       end
       true
     end
-
-

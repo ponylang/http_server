@@ -26,48 +26,6 @@ trait tag Session
 
 
   """
-  ////////////////////////
-  // API THAT CALLS YOU //
-  ////////////////////////
-  be _receive_start(request: Request val, request_id: RequestID) =>
-    """
-    Start receiving a request.
-
-    This will be called when all headers of an incoming request have been parsed.
-    [Request](http_server-Request.md) contains all information extracted from
-    these parts.
-
-    The [RequestID](http_server-RequestID.md) is passed in order for the Session
-    implementation to maintain the correct request order in case of HTTP pipelining.
-    Response handling can happen asynchronously at arbitrary times, so the RequestID
-    helps us to get the responses back into the right order, no matter how they
-    are received from the application.
-    """
-    None
-
-  be _receive_chunk(data: Array[U8] val, request_id: RequestID) =>
-    """
-    Receive a chunk of body data for the request identified by `request_id`.
-
-    The body is split up into arbitrarily sized data chunks, whose size is determined by the
-    underlying protocol mechanisms, not the actual body size.
-    """
-    None
-
-  be _receive_finished(request_id: RequestID) =>
-    """
-    Indicate that the current inbound request, including the body, has been fully received.
-    """
-    None
-
-  be _receive_failed(parse_error: RequestParseError, request_id: RequestID) =>
-    """
-    Nofitcation if the request parser failed to parse incoming data as Request.
-
-    Ignored by default.
-    """
-    None
-
   ///////////////////////
   // API THAT YOU CALL //
   ///////////////////////
