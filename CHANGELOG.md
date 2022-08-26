@@ -2,17 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [unreleased] - unreleased
+## [0.4.2] - 2022-08-26
 
 ### Fixed
 
 - Update default connection heartbeat length ([PR #47](https://github.com/ponylang/http_server/pull/47))
-
-### Added
-
-
-### Changed
-
 
 ## [0.4.1] - 2022-02-26
 
