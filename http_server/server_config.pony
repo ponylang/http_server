@@ -75,7 +75,7 @@ class val ServerConfig
      | None =>
        // use a quarter of the actual configured timeout
        // but at minimum 1 second
-       ((connection_timeout.u64() * 1000) / 4).max(1)
+       ((connection_timeout.u64() * 1000) / 4).max(1000)
      | let interval: U64 => interval
      end
 
