@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 
 
+## [0.4.2] - 2022-08-26
+
+### Fixed
+
+- Update default connection heartbeat length ([PR #47](https://github.com/ponylang/http_server/pull/47))
+
 ## [0.4.1] - 2022-02-26
 
 ### Fixed
