@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 
+- Add OpenSSL 3 support ([PR #51](https://github.com/ponylang/http_server/pull/51))
 
 ### Changed
 
