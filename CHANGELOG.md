@@ -2,17 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [unreleased] - unreleased
-
-### Fixed
-
+## [0.4.3] - 2023-01-03
 
 ### Added
 
 - Add OpenSSL 3 support ([PR #51](https://github.com/ponylang/http_server/pull/51))
-
-### Changed
-
 
 ## [0.4.2] - 2022-08-26
 
