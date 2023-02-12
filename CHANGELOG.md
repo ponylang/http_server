@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Update for json package removal from standard library ([PR #52](https://github.com/ponylang/http_server/pull/52))
 
 ## [0.4.3] - 2023-01-03
 
