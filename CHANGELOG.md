@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Update to ponylang/net_ssl 1.3.2 ([PR #69](https://github.com/ponylang/http_server/pull/69))
 
 ## [0.4.5] - 2023-04-27
 
