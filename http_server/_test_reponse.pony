@@ -12,7 +12,7 @@ class \nodoc\ iso _BuildableResponseTest is UnitTest
 
   fun apply(h: TestHelper) ? =>
     let without_length = BuildableResponse()
-    h.assert_is[None](None, without_length.header("Content-Length") as None)
+    h.assert_is[String]("0", without_length.header("Content-Length") as String)
 
     let with_length = BuildableResponse(where content_length' = 42)
     h.assert_eq[String]("42", with_length.header("Content-Length") as String)

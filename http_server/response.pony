@@ -298,8 +298,8 @@ class val BuildableResponse is (Response & ByteSeqIter)
     match cl
     | let clu: USize =>
       set_header("Content-Length", cl.string())
-    // | None =>
-    // TODO: drop header
+    | None =>
+      set_header("Content-Length", "0")
     end
     this
 
