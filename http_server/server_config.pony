@@ -57,13 +57,19 @@ class val ServerConfig
     Default: `(<connection_timeout> * 1000) / 4`
     """
 
+  let allow_upgrade: Bool
+    """
+    Allow the connection to be upgraded to a websocket connection.
+    """
+
   new val create(
     host': String = "localhost",
     port': String = "0",
     connection_timeout': USize = 0,
     max_request_handling_lag': USize = 100,
     max_concurrent_connections': USize = 0,
-    timeout_heartbeat_interval': (U64 | None) = None
+    timeout_heartbeat_interval': (U64 | None) = None,
+    allow_upgrade': Bool = false
    ) =>
      host = host'
      port = port'
@@ -78,6 +84,7 @@ class val ServerConfig
        ((connection_timeout.u64() * 1000) / 4).max(1000)
      | let interval: U64 => interval
      end
+     allow_upgrade = allow_upgrade'
 
 
   fun box has_timeout(): Bool =>

@@ -83,8 +83,12 @@ class HTTP11RequestParser
   var _persistent_connection: Bool = true
   var _transfer_coding: (Chunked | None) = None
 
-  new create(handler: HTTP11RequestHandler) =>
+  let _allow_upgrade: Bool
+  var _websocket: Bool = false
+
+  new create(handler: HTTP11RequestHandler, allow_upgrade: Bool = false) =>
     _handler = handler
+    _allow_upgrade = allow_upgrade
 
   fun ref parse(data: Array[U8] val): ParseReturn =>
     _buffer = _buffer + (consume data)
@@ -272,6 +276,8 @@ class HTTP11RequestParser
         end
       _current_request.set_content_length(cl)
       _expected_body_length = cl
+    elseif CompareCaseInsensitive(name, "upgrade") and _allow_upgrade then
+      _websocket = value == "websocket"
     elseif CompareCaseInsensitive(name, "transfer-encoding") then
       try
         value.find("chunked")?
@@ -356,14 +362,18 @@ class HTTP11RequestParser
           _handler._receive_chunk(data, _request_counter)
         end
       end
-      if _expected_body_length == 0 then
+      if _websocket then
+        _handler._receive_chunk(_buffer.array(), _request_counter)
+        _buffer = _buffer.drop(_buffer.size())
+      end
+      if (_expected_body_length == 0) and (not _websocket) then
 
         _handler._receive_finished(_request_counter)
         reset()
         if _buffer.size() > 0 then
           _parse_request_line()
         end
-      else
+      elseif not _websocket then
         NeedMore
       end
     end

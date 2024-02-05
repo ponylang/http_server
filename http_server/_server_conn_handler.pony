@@ -36,7 +36,7 @@ class _ServerConnHandler is TCPConnectionNotify
     let sconn = _ServerConnection(_handlermaker, _config, conn)
     _registry.register_session(sconn)
     _session = sconn
-    _parser = HTTP11RequestParser.create(sconn)
+    _parser = HTTP11RequestParser.create(sconn, _config.allow_upgrade)
 
   fun ref received(
     conn: TCPConnection ref,
