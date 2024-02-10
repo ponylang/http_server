@@ -29,7 +29,7 @@ type _PendingResponse is (RequestID, Vec[_ByteSeqs])
 
 class ref _PendingResponses
   // TODO: find out what is the most efficient way to
-  //       keep and acucmulate a pending response
+  //       keep and accumulate a pending response
   //       from ByteSeq and ByteSeqIter
   embed _pending: Array[_PendingResponse] ref = _pending.create(0)
 
