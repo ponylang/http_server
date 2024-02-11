@@ -6,11 +6,25 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
+- Responses without `Transfer-Encoding: chunked` had no `Content-Length` header set when not done explicitly. This made some clients (e.g. curl) hang.
+  Now HTTP Responses either built via `Responses.builder()` or `BuildableResponse` will set a default Content-Length of `0` if none was provided.
+
 
 ### Added
 
+- API additions:
+  
+  - `ResponseBuilderHeaders.set_content_length(content_length: USize)` has been added to set a content-length from a numeric value.
+  - `BuildableResponse.delete_header(header_name: String)` was added to enable deletion of headers that have been set previously.
 
 ### Changed
+
+- The API for creating HTTP Responses changed slightly:
+
+  - `ResponseBuilderBody.add_chunk()` now takes a `ByteSeq` instead of `Array[U8] val`. This allows for passing `String val` as well.
+  - `BuildableResponse.create()` now only takes a `Status` and a `Version`. Content-Length and Transfer-Encoding can be set later with `set_content_length()` and `set_transfer_encoding()`
+  - `BuildableResponse.set_transfer_coding()` changed to `.set_transfer_encoding()`
+  - `Response.transfer_coding()` changed to `.transfer_encoding()`.
 
 
 ## [0.4.6] - 2024-01-14
