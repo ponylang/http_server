@@ -9,7 +9,7 @@ interface val Response is ByteSeqIter
   fun status(): Status
   fun header(name: String): (String | None)
   fun headers(): Iterator[Header]
-  fun transfer_coding(): (Chunked | None)
+  fun transfer_encoding(): (Chunked | None)
   fun content_length(): (USize | None)
   fun to_bytes(): ByteArrays
   fun array(): Array[U8] iso^
@@ -104,7 +104,7 @@ class iso _FullResponseBuilder
 
   var _array: Array[U8] iso
   var _chunks: Array[Array[U8] val] iso
-  var _transfer_coding: (Chunked | None)
+  var _transfer_encoding: (Chunked | None)
   var _content_length_set: Bool
   var _needs_reset: Bool = false
 
@@ -115,7 +115,7 @@ class iso _FullResponseBuilder
       .>append(" ")
     _chunks = (recover iso Array[Array[U8] val](1) end)
       .>push(_empty_placeholder)
-    _transfer_coding = None
+    _transfer_encoding = None
     _content_length_set = false
 
   fun ref reset(): ResponseBuilder =>
@@ -125,7 +125,7 @@ class iso _FullResponseBuilder
         .>append(" ")
       _chunks = (recover iso Array[Array[U8] val](1) end)
         .>push(_empty_placeholder)
-      _transfer_coding = None
+      _transfer_encoding = None
       _content_length_set = false
     end
     _needs_reset = false
@@ -138,7 +138,7 @@ class iso _FullResponseBuilder
     this
 
   fun ref finish_headers(): ResponseBuilderBody =>
-    if (not _content_length_set) and (_transfer_coding is None) then
+    if (not _content_length_set) and (_transfer_encoding is None) then
       add_header("Content-Length", "0")
     end
     _array.append(_crlf)
@@ -167,7 +167,7 @@ class iso _FullResponseBuilder
     | Chunked =>
       add_header("Transfer-Encoding", "chunked")
     end
-    _transfer_coding = chunked
+    _transfer_encoding = chunked
     _needs_reset = true
     this
 
@@ -189,7 +189,7 @@ class iso _FullResponseBuilder
     if (d.size() < 65535) and (_chunks.size() == 1) then
       // we can only append to the response array if we have no chunk yet added
       // to chunks (1 means 0 as we always put a placeholder)
-      if _transfer_coding is Chunked then
+      if _transfer_encoding is Chunked then
         _array
           .>append(
             (recover val Format.int[USize](d.size() where fmt = FormatHexBare).>append(_crlf) end).array())
@@ -199,7 +199,7 @@ class iso _FullResponseBuilder
         _array.append(d)
       end
     else
-      if _transfer_coding is Chunked then
+      if _transfer_encoding is Chunked then
         _chunks
           .>push(
             (recover val Format.int[USize](d.size() where fmt = FormatHexBare).>append(_crlf) end).array())
@@ -233,7 +233,7 @@ class iso _FullResponseBuilder
     end
     let byteseqs = (_chunks = (recover iso Array[Array[U8] val](1) end)
       .>push(_empty_placeholder))
-    _transfer_coding = None
+    _transfer_encoding = None
     _content_length_set = false
     _needs_reset = false
     consume byteseqs
@@ -304,7 +304,7 @@ class val BuildableResponse is (Response & ByteSeqIter)
     _headers.clear()
     this
 
-  fun transfer_coding(): (Chunked | None) =>
+  fun transfer_encoding(): (Chunked | None) =>
     match _headers.get("transfer-encoding")
     | let te: String if te.contains("chunked") => Chunked
     end
@@ -361,7 +361,7 @@ class val BuildableResponse is (Response & ByteSeqIter)
     end
 
     // inject content-length if needed
-    let needs_content_length = transfer_coding() is None
+    let needs_content_length = transfer_encoding() is None
     let no_content_length_provided = _headers.get("content-length") is None
     if needs_content_length and no_content_length_provided then
       arr.>append("Content-Length: 0\r\n")
@@ -381,7 +381,7 @@ class val BuildableResponse is (Response & ByteSeqIter)
     end
 
     // inject content-length if needed
-    let needs_content_length = transfer_coding() is None
+    let needs_content_length = transfer_encoding() is None
     let no_content_length_provided = _headers.get("content-length") is None
     if needs_content_length and no_content_length_provided then
       acc = acc + "Content-Length: 0\r\n"
