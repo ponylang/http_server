@@ -1,0 +1,32 @@
+{
+  "locks": [
+    {
+      "locator": "../..",
+      "revision": "main"
+    },
+    {
+      "locator": "github.com/ponylang/json.git",
+      "revision": "0.1.0"
+    },
+    {
+      "locator": ".",
+      "revision": "main"
+    },
+    {
+      "locator": "github.com/ponylang/valbytes.git",
+      "revision": "0.6.2"
+    },
+    {
+      "locator": "github.com/mfelsche/pony-websocket.git",
+      "revision": "0.7.0"
+    },
+    {
+      "locator": "github.com/ponylang/crypto.git",
+      "revision": "1.2.2"
+    },
+    {
+      "locator": "github.com/ponylang/net_ssl.git",
+      "revision": "1.3.2"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 use "valbytes"
+use "net"
 
 trait tag Session
   """
@@ -243,5 +244,10 @@ trait tag Session
     """
     None
 
+  be upgrade(notify: TCPConnectionNotify iso) =>
+    """
+    Upgrade this TCP connection to another handler
+    """
+    None
 
 

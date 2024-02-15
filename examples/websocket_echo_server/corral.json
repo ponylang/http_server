@@ -1,0 +1,27 @@
+{
+  "packages": [
+    "websocket_echo_server"
+  ],
+  "deps": [
+    {
+      "locator": "../.."
+    },
+    {
+      "locator": "github.com/mfelsche/pony-websocket.git",
+      "version": "0.7.0",
+      "note": "forked from https://github.com/oraoto/pony-websocket"
+    },
+    {
+      "locator": "github.com/ponylang/crypto.git",
+      "version": "1.2.2"
+    }
+  ],
+  "info": {
+    "description": "http server example websocket echo server",
+    "homepage": "https://github.com/ponylang/http_server",
+    "license": "bsd-2-clause",
+    "documentation_url": "https://ponylang.github.io/http_server/",
+    "version": "0.4.6",
+    "name": "websocket_echo_server"
+  }
+}
