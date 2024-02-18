@@ -29,7 +29,7 @@ All notable changes to this project will be documented in this file. This projec
 - `ResponseBuilderBody.add_chunk()` now takes a `ByteSeq` instead of `Array[U8] val` ([PR #74](https://github.com/ponylang/http_server/pull/74))
 - `BuildableResponse.create()` now only takes a `Status` and a `Version` ([PR #74](https://github.com/ponylang/http_server/pull/74))
 - `BuildableResponse.set_transfer_coding()` changed to `.set_transfer_encoding()` ([PR #74](https://github.com/ponylang/http_server/pull/74))
-- - `Response.transfer_coding()` changed to `.transfer_encoding()` ([PR #74](https://github.com/ponylang/http_server/pull/74))
+- `Response.transfer_coding()` changed to `.transfer_encoding()` ([PR #74](https://github.com/ponylang/http_server/pull/74))
 
 ## [0.4.6] - 2024-01-14
 
