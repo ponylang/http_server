@@ -3,7 +3,8 @@ config ?= release
 PACKAGE := http_server
 GET_DEPENDENCIES_WITH := corral fetch
 CLEAN_DEPENDENCIES_WITH := corral clean
-COMPILE_WITH := corral run -- ponyc
+PONYC ?= ponyc
+COMPILE_WITH := corral run -- $(PONYC)
 
 BUILD_DIR ?= build/$(config)
 SRC_DIR ?= $(PACKAGE)

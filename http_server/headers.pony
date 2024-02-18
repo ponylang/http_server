@@ -77,7 +77,6 @@ class Headers
     """
     if a header with name already exists, its value will be overriden with this value.
     """
-    // binary search
     try
       var i = USize(0)
       var l = USize(0)
@@ -85,7 +84,7 @@ class Headers
       while l < r do
         i = (l + r).fld(2)
         let header = _hl(i)?
-        match _compare(header._1, name)
+        match IgnoreAsciiCase.compare(header._1, name)
         | Less =>
           l = i + 1
         | Equal =>
@@ -97,6 +96,32 @@ class Headers
       end
       _hl.insert(l, (name, value))?
     end
+
+  fun ref delete(name: String): (Header | None) =>
+    """
+    If a header with name exists, remove it.
+
+    Returns `true` if a header with that name existed, `false` otherwise.
+    """
+    // binary search
+    try
+      var i = USize(0)
+      var l = USize(0)
+      var r = _hl.size()
+      while l < r do
+        i = (l + r).fld(2)
+        let header = _hl(i)?
+        match IgnoreAsciiCase.compare(header._1, name)
+        | Less =>
+          l = i + 1
+        | Equal =>
+          return try _hl.delete(i)? end
+        else
+          r = i
+        end
+      end
+    end
+    None
 
   fun ref add(name: String, value: String) =>
     """
@@ -111,7 +136,7 @@ class Headers
       while l < r do
         i = (l + r).fld(2)
         let header = _hl(i)?
-        match _compare(header._1, name)
+        match IgnoreAsciiCase.compare(header._1, name)
         | Less =>
           l = i + 1
         | Equal =>
@@ -138,7 +163,7 @@ class Headers
       while l < r do
         i = (l + r).fld(2)
         let header = _hl(i)?
-        match _compare(header._1, name)
+        match IgnoreAsciiCase.compare(header._1, name)
         | Less =>
           l = i + 1
         | Equal =>
@@ -164,55 +189,5 @@ class Headers
       s + k.size() + 2 + v.size() + 2
     end
     s
-
-  fun _compare(left: String, right: String): Compare =>
-    """
-    Less: left sorts lexicographically smaller than right
-    Equal: same size, same content
-    Greater: left sorts lexicographically higher than right
-
-    _compare("A", "B") ==> Less
-    _compare("AA", "A") ==> Greater
-    _compare("A", "AA") ==> Less
-    _compare("", "") ==> Equal
-    """
-    let ls = left.size()
-    let rs = right.size()
-    let min = ls.min(rs)
-
-    var i = USize(0)
-    while i < min do
-      try
-        let lc = _lower(left(i)?)
-        let rc = _lower(right(i)?)
-        if lc < rc then
-          return Less
-        elseif rc < lc then
-          return Greater
-        end
-      else
-        Less // should not happen, size checked
-      end
-      i = i + 1
-    end
-    // all characters equal up to min size
-    if ls > min then
-      // left side is longer, so considered greater
-      Greater
-    elseif rs > min then
-      // right side is longer, so considered greater
-      Less
-    else
-      // both sides equal size and content
-      Equal
-    end
-
-  fun _lower(c: U8): U8 =>
-    if (c >= 0x41) and (c <= 0x5A) then
-      c + 0x20
-    else
-      c
-    end
-
 
 
