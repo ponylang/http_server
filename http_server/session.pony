@@ -244,9 +244,10 @@ trait tag Session
     """
     None
 
-  be upgrade(notify: TCPConnectionNotify iso) =>
+  be upgrade_protocol(notify: TCPConnectionNotify iso) =>
     """
-    Upgrade this TCP connection to another handler
+    Upgrade this TCP connection to another handler.
+    See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Upgrade
     """
     None
 
