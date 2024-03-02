@@ -1,5 +1,5 @@
-use "valbytes"
 use "net"
+use "valbytes"
 
 trait tag Session
   """
