@@ -43,8 +43,6 @@ SOURCE_FILES := $(shell find $(SRC_DIR) -name *.pony)
 EXAMPLES := $(notdir $(shell find $(EXAMPLES_DIR)/* -maxdepth 0 -type d -not -name websocket_echo_server))
 EXAMPLES_SOURCE_FILES := $(shell find $(EXAMPLES_DIR) -name *.pony -not -path '**/websocket_echo_server/*')
 EXAMPLES_BINARIES := $(addprefix $(BUILD_DIR)/,$(EXAMPLES))
-WEBSOCKET_EXAMPLE_SOURCE_FILES := $(EXAMPLES_DIR)/websocket_echo_server/main.pony
-WEBSOCKET_EXAMPLES_BINARY := $(BUILD_DIR)/websocket_echo_server
 BENCH_SOURCE_FILES := $(shell find $(BENCH_DIR) -name *.pony)
 
 test: unit-tests build-examples
@@ -56,16 +54,11 @@ $(tests_binary): $(SOURCE_FILES) | $(BUILD_DIR)
 	$(GET_DEPENDENCIES_WITH)
 	$(PONYC) -o $(BUILD_DIR) $(SRC_DIR)
 
-build-examples: $(EXAMPLES_BINARIES) $(WEBSOCKET_EXAMPLES_BINARY)
+build-examples: $(EXAMPLES_BINARIES)
 
 $(EXAMPLES_BINARIES): $(BUILD_DIR)/%: $(SOURCE_FILES) $(EXAMPLES_SOURCE_FILES) | $(BUILD_DIR)
 	$(GET_DEPENDENCIES_WITH)
 	$(PONYC) -o $(BUILD_DIR) $(EXAMPLES_DIR)/$*
-
-$(WEBSOCKET_EXAMPLES_BINARY): $(BUILD_DIR)/%: $(SOURCE_FILES) $(WEBSOCKET_EXAMPLE_SOURCE_FILES) | $(BUILD_DIR)
-	cd $(EXAMPLES_DIR)/$* && \
-		$(GET_DEPENDENCIES_WITH) && \
-		$(PONYC) -o ../../$(BUILD_DIR) $(EXAMPLES_DIR)/$*
 
 clean:
 	$(CLEAN_DEPENDENCIES_WITH)
