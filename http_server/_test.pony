@@ -1,11 +1,12 @@
-use "pony_check"
-use "pony_test"
-use "net"
+use "buffered"
 use "collections"
 use "itertools"
-use "valbytes"
-use "buffered"
+use "net"
+use "pony_check"
+use "pony_test"
 use "time"
+
+use "valbytes"
 
 actor \nodoc\ Main is TestList
   new create(env: Env) => PonyTest(env, this)

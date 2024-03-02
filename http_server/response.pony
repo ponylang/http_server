@@ -1,5 +1,6 @@
-use "valbytes"
 use "format"
+
+use "valbytes"
 
 interface val Response is ByteSeqIter
   """

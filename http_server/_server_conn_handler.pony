@@ -1,5 +1,5 @@
-use "net"
 use "debug"
+use "net"
 
 class _ServerConnHandler is TCPConnectionNotify
   """
