@@ -253,6 +253,7 @@ trait tag Session
     After calling this behaviour, this session and the connected [Handler](http_server-Handler.md) instance will not be called again, so it is necessary to do any required clean up right after this call.
 
     See:
+
       - [Protocol Upgrade Mechanism](https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism)
       - [Upgrade Header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Upgrade)
     """
