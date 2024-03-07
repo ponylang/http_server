@@ -1,5 +1,5 @@
-use "net"
 use "pony_test"
+use "net"
 use "time"
 
 actor \nodoc\ _ConnectionHandlingTests is TestList

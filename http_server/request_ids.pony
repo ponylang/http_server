@@ -1,11 +1,6 @@
 
 
 type RequestID is USize
-  """
-  Opaque identifier for HTTP Requests.
-
-  Used to maintain order in sending out HTTP responses when pipelining is used.
-  """
 
 primitive RequestIDs
   """

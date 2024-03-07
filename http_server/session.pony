@@ -1,5 +1,4 @@
 use "net"
-
 use "valbytes"
 
 trait tag Session

@@ -1,5 +1,4 @@
 use "time"
-
 use "json"
 
 class val ServerConfig

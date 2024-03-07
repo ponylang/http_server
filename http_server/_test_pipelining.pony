@@ -1,8 +1,7 @@
 use "net"
+use "time"
 use "pony_test"
 use "random"
-use "time"
-
 use "valbytes"
 
 actor \nodoc\ _PipeliningTests is TestList

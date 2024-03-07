@@ -1,6 +1,5 @@
-use "debug"
-
 use "valbytes"
+use "debug"
 
 interface SyncHandler
   """
