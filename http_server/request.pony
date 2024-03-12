@@ -1,5 +1,5 @@
 
-interface val _Version is (Equatable[Version] & Stringable)
+interface val _Version is (Equatable[Version] & Stringable & Comparable[Version])
   fun to_bytes(): Array[U8] val
 
 primitive HTTP11 is _Version
@@ -8,7 +8,21 @@ primitive HTTP11 is _Version
   """
   fun string(): String iso^ => recover iso String(8).>append("HTTP/1.1") end
   fun to_bytes(): Array[U8] val => [as U8: 'H'; 'T'; 'T'; 'P'; '/'; '1'; '.'; '1']
+  fun u64(): U64 => 
+    """
+    Representation of the bytes for this HTTP Version on the wire in form of an 8-byte unsigned integer with the ASCII bytes written from highest to least significant byte.
+
+    Result: `0x485454502F312E31`
+    """
+    'HTTP/1.1'
   fun eq(o: Version): Bool => o is this
+  fun lt(o: Version): Bool =>
+    match o
+    | let _: HTTP11 => false
+    | let _: HTTP10 => false
+    | let _: HTTP09 => false
+    end
+
 
 primitive HTTP10 is _Version
   """
@@ -16,7 +30,20 @@ primitive HTTP10 is _Version
   """
   fun string(): String iso^ => recover iso String(8).>append("HTTP/1.0") end
   fun to_bytes(): Array[U8] val => [as U8: 'H'; 'T'; 'T'; 'P'; '/'; '1'; '.'; '0']
+  fun u64(): U64 => 
+    """
+    Representation of the bytes for this HTTP Version on the wire in form of an 8-byte unsigned integer with the ASCII bytes written from highest to least significant byte.
+
+    Result: `0x485454502F312E30`
+    """
+    'HTTP/1.0'
   fun eq(o: Version): Bool => o is this
+  fun lt(o: Version): Bool =>
+    match o
+    | let _: HTTP11 => true
+    | let _: HTTP10 => false
+    | let _: HTTP09 => false
+    end
 
 primitive HTTP09 is _Version
   """
@@ -24,7 +51,22 @@ primitive HTTP09 is _Version
   """
   fun string(): String iso^ => recover iso String(8).>append("HTTP/0.9") end
   fun to_bytes(): Array[U8] val => [as U8: 'H'; 'T'; 'T'; 'P'; '/'; '0'; '.'; '9']
+  fun u64(): U64 => 
+    """
+    Representation of the bytes for this HTTP Version on the wire in form of an 8-byte unsigned integer with the ASCII bytes written from highest to least significant byte.
+
+    Result: `0x485454502F302E39`
+    """
+    'HTTP/0.9'
   fun eq(o: Version): Bool => o is this
+  fun lt(o: Version): Bool =>
+    match o
+    | let _: HTTP11 => true
+    | let _: HTTP10 => true
+    | let _: HTTP09 => false
+    end
+
+
 
 type Version is ((HTTP09 | HTTP10 | HTTP11) & _Version)
   """

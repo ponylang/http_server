@@ -5,4 +5,4 @@ tags
 /.coverage/
 /_corral/
 /_repos/
-/lock.json
+lock.json

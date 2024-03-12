@@ -15,7 +15,7 @@ interface Handler
 
   When an [Request](http_server-Request.md) is received on an [Session](http_server-Session.md) actor,
   the corresponding [Handler.apply](http_server-Handler.md#apply) method is called
-  with the request and a [RequestID](http_server-RequestID). The [Request](http_server-Request.md)
+  with the request and a [RequestID](http_server-RequestID.md). The [Request](http_server-Request.md)
   contains the information extracted from HTTP Headers and the Request Line, but it does not
   contain any body data. It is sent to [Handler.apply](http_server-Handler.md#apply) before the body
   is fully received.
@@ -27,7 +27,7 @@ interface Handler
   [RequestID](http_server-RequestID.md) of the request it belongs to. Now is the time to act on the full body data,
   if it hasn't been processed yet.
 
-  The [RequestID](http_server-Requestid.md) must be kept around for sending the response for this request.
+  The [RequestID](http_server-RequestID.md) must be kept around for sending the response for this request.
   This way the session can ensure, all responses are sent in the same order as they have been received,
   which is required for HTTP pipelining. This way processing responses can be passed to other actors and
   processing can take arbitrary times. The [Session](http_server-Session.md) will take care of sending
