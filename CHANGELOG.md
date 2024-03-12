@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 
+- Add possibility to upgrade the current session to a new TCP handler ([PR #75](https://github.com/ponylang/http_server/pull/75))
 
 ### Changed
 
