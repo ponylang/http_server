@@ -13,6 +13,24 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 
 
+## [0.5.0] - 2024-02-18
+
+### Fixed
+
+- Ensure Content-Length is set for all Responses that need it ([PR #74](https://github.com/ponylang/http_server/pull/74))
+
+### Added
+
+- Added `ResponseBuilderHeaders.set_content_length(content_length: USize)` ([PR #74](https://github.com/ponylang/http_server/pull/74))
+- Added `BuildableResponse.delete_header(header_name: String)` ([PR #74](https://github.com/ponylang/http_server/pull/74))
+
+### Changed
+
+- `ResponseBuilderBody.add_chunk()` now takes a `ByteSeq` instead of `Array[U8] val` ([PR #74](https://github.com/ponylang/http_server/pull/74))
+- `BuildableResponse.create()` now only takes a `Status` and a `Version` ([PR #74](https://github.com/ponylang/http_server/pull/74))
+- `BuildableResponse.set_transfer_coding()` changed to `.set_transfer_encoding()` ([PR #74](https://github.com/ponylang/http_server/pull/74))
+- `Response.transfer_coding()` changed to `.transfer_encoding()` ([PR #74](https://github.com/ponylang/http_server/pull/74))
+
 ## [0.4.6] - 2024-01-14
 
 ### Changed

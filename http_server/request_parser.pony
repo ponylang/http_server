@@ -180,6 +180,7 @@ class HTTP11RequestParser
           return _request_line_exhausted()
         end
         if (_buffer.size() - version_start) >= 8 then
+          // TODO compare http versions using u64
           try
             if (_buffer(version_start)? == 'H') and
               (_buffer(version_start + 1)? == 'T') and
@@ -263,7 +264,7 @@ class HTTP11RequestParser
     )
 
   fun ref _handle_special_headers(name: String, value: String): ParseReturn =>
-    if CompareCaseInsensitive(name, "content-length") then
+    if IgnoreAsciiCase.eq(name, "content-length") then
       let cl =
         try
           value.usize()?
@@ -272,7 +273,7 @@ class HTTP11RequestParser
         end
       _current_request.set_content_length(cl)
       _expected_body_length = cl
-    elseif CompareCaseInsensitive(name, "transfer-encoding") then
+    elseif IgnoreAsciiCase.eq(name, "transfer-encoding") then
       try
         value.find("chunked")?
         _transfer_coding = Chunked
@@ -280,7 +281,7 @@ class HTTP11RequestParser
       else
         return InvalidTransferCoding
       end
-    elseif CompareCaseInsensitive(name, "connection") then
+    elseif IgnoreAsciiCase.eq(name, "connection") then
       _persistent_connection = if value == "close" then false else true end
     end
     None
@@ -493,36 +494,5 @@ primitive _HTTP11Parsing
 
   fun tag is_horizontal_space(ch: U8): Bool =>
     (ch == 0x09) or (ch == 0x20)
-
-
-primitive CompareCaseInsensitive
-  fun _lower(c: U8): U8 =>
-    if (c >= 0x41) and (c <= 0x5A) then
-      c + 0x20
-    else
-      c
-    end
-
-  fun apply(left: String, right: String): Bool =>
-    """
-    Returns true if both strings compare equal
-    when compared case insensitively
-    """
-    if left.size() != right.size() then
-      false
-    else
-      var i: USize = 0
-      while i < left.size() do
-        try
-          if _lower(left(i)?) != _lower(right(i)?) then
-            return false
-          end
-        else
-          return false
-        end
-        i = i + 1
-      end
-      true
-    end
 
 
