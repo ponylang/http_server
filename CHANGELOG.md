@@ -2,17 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [unreleased] - unreleased
-
-### Fixed
-
+## [0.6.0] - 2024-03-12
 
 ### Added
 
 - Add possibility to upgrade the current session to a new TCP handler ([PR #75](https://github.com/ponylang/http_server/pull/75))
-
-### Changed
-
 
 ## [0.5.0] - 2024-02-18
 
