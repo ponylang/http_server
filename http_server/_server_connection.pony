@@ -291,6 +291,6 @@ actor _ServerConnection is (Session & HTTP11RequestHandler)
       dispose()
     end
 
-  be upgrade(notify: TCPConnectionNotify iso) =>
+  be upgrade_protocol(notify: TCPConnectionNotify iso) =>
     _conn.set_notify(consume notify)
 
