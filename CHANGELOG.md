@@ -2,17 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [unreleased] - unreleased
+## [0.6.1] - 2024-04-02
 
 ### Fixed
 
 - Implement the correct method in the server_connection ([PR #78](https://github.com/ponylang/http_server/pull/78))
-
-### Added
-
-
-### Changed
-
 
 ## [0.6.0] - 2024-03-12
 
