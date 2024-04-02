@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 
+- Implement the correct method in the server_connection ([PR #78](https://github.com/ponylang/http_server/pull/78))
 
 ### Added
 
