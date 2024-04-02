@@ -21,7 +21,7 @@
     "homepage": "https://github.com/ponylang/http_server",
     "license": "BSD-2-Clause",
     "documentation_url": "https://ponylang.github.io/http_server/",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "name": "http_server"
   }
 }
