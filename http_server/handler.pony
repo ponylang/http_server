@@ -81,7 +81,7 @@ interface Handler
     fun ref chunk(data: ByteSeq val, request_id: RequestID) =>
       _body = _body + data
 
-    fun ref finished(request_id: RequestID) =>
+    fun ref finished(request_id: RequestID): Bool =>
       _session.send_raw(
         Responses.builder()
           .set_status(StatusOk)
@@ -96,6 +96,7 @@ interface Handler
         request_id
       )
       _session.send_finished(request_id)
+      true
   ```
 
   """
@@ -113,11 +114,12 @@ interface Handler
     recent `Request` delivered by an `apply` notification.
     """
 
-  fun ref finished(request_id: RequestID) =>
+  fun ref finished(request_id: RequestID): Bool =>
     """
     Notification that no more body chunks are coming. Delivery of this HTTP
     message is complete.
     """
+    true
 
   fun ref cancelled(request_id: RequestID) =>
     """

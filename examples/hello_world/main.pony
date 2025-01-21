@@ -103,5 +103,5 @@ class BackendHandler is Handler
     _session.send_raw(_response, request_id)
     _session.send_finished(request_id)
 
-  fun ref finished(request_id: RequestID) => None
+//  fun ref finished(request_id: RequestID): Bool => true
 
