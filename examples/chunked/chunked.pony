@@ -41,7 +41,7 @@ actor Main
       """
       Usage:
 
-         gradual [<PORT> = 50000] [<MAX_CONCURRENT_CONNECTIONS> = 100]
+         chunked [<PORT> = 50000] [<MAX_CONCURRENT_CONNECTIONS> = 100]
 
       """
     )

@@ -13,7 +13,7 @@ interface Handler
 
   ### Receiving Requests
 
-  When an [Request](http_server-Request.md) is received on an [Session](http_server-Session.md) actor,
+  When a [Request](http_server-Request.md) is received on a [Session](http_server-Session.md) actor,
   the corresponding [Handler.apply](http_server-Handler.md#apply) method is called
   with the request and a [RequestID](http_server-RequestID.md). The [Request](http_server-Request.md)
   contains the information extracted from HTTP Headers and the Request Line, but it does not
@@ -37,7 +37,13 @@ interface Handler
 
   - exactly once:       `apply(request_n, requestid_n)`
   - zero or more times: `chunk(data, requestid_n)`
-  - exactly once:       `finished(requestid_n)`
+  - one or more times:       `finished(requestid_n)`
+
+  [Handler.finished](http_server-Handler.md#finished) is called one or more times depending to provide
+  the application the opportunity to send body data in chunks as opposed to one-shot.
+  
+  [Handler.finished](http_server-Handler.md#finished) should return false if there is more data to be sent,
+  or return true when there is no more data to be sent.
 
   And so on for `requestid_(n + 1)`. Only after `finished` has been called for a
   `RequestID`, the next request will be received by the Handler instance, there will
@@ -116,8 +122,14 @@ interface Handler
 
   fun ref finished(request_id: RequestID): Bool =>
     """
-    Notification that no more body chunks are coming. Delivery of this HTTP
-    message is complete.
+    The first call to this function indicates that no more body chunks
+    are coming. Delivery of this HTTP request's body is complete.
+
+    Returning true indicates that the application has completed its
+    response for the provided request_id.
+
+    Returning false indicates that there is more work to be done and
+    it should be called again.
     """
     true
 
