@@ -37,7 +37,7 @@ interface Handler
 
   - exactly once:       `apply(request_n, requestid_n)`
   - zero or more times: `chunk(data, requestid_n)`
-  - one or more times:       `finished(requestid_n)`
+  - one or more times:  `finished(requestid_n)`
 
   [Handler.finished](http_server-Handler.md#finished) is called one or more times depending to provide
   the application the opportunity to send body data in chunks as opposed to one-shot.
