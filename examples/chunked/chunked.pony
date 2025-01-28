@@ -145,6 +145,7 @@ class BackendHandler is Handler
     | ExWorld =>
       _session.send_chunk("World!", request_id)
       _session.send_finished(request_id)
+      stage = ExHdrs
       return true
     end
     true // Never Reached
