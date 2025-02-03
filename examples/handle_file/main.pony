@@ -34,24 +34,12 @@ actor Main
       env.exitcode(1)
       return
     end
-    // get file size - we simply assume it doesn't change/grow
-    let file_size = 
-      match OpenFile(file)
-      | let f: File =>
-        let s = f.size()
-        f.dispose()
-        s
-      else
-        env.err.print("Error opening"  + file.path)
-        env.exitcode(1)
-        return
-      end
 
     // Start the top server control actor.
     let server = Server(
       TCPListenAuth(env.root),
       LoggingServerNotify(env),  // notify for server lifecycle events
-      BackendMaker.create(env, file, file_size)   // factory for session-based application backend
+      BackendMaker.create(env, file)   // factory for session-based application backend
       where config = ServerConfig( // configuration of Server
         where host' = "localhost",
               port' = "65535",
@@ -114,15 +102,13 @@ class BackendMaker is HandlerFactory
   """
   let _env: Env
   let _file_path: FilePath
-  let _file_size: USize
 
-  new val create(env: Env, file_path: FilePath, file_size: USize) =>
+  new val create(env: Env, file_path: FilePath) =>
     _env = env
     _file_path = file_path
-    _file_size = file_size
 
   fun apply(session: Session): Handler^ =>
-    BackendHandler.create(_env, session, _file_path, _file_size)
+    BackendHandler.create(_env, session, _file_path)
 
 class BackendHandler is Handler
   """
@@ -134,23 +120,14 @@ class BackendHandler is Handler
   """
   let _env: Env
   let _session: Session
-  let _file: (File | None)
-  let _file_size: USize
-  let _content_type: String
-  let _chunked: (Chunked | None)
+  let _file_sender: FileSender
 
   var _current: (Request | None) = None
 
-  new ref create(env: Env, session: Session, file_path: FilePath, file_size: USize) =>
+  new ref create(env: Env, session: Session, file_path: FilePath) =>
     _env = env
     _session = session
-    _content_type = MimeTypes(file_path.path)
-    _file =
-      try
-        OpenFile(file_path) as File
-      end
-    _file_size = file_size
-    _chunked = if file_size > 4096 then Chunked else None end
+    _file_sender = FileSender.create(session, file_path)
 
   fun ref apply(request: Request val, request_id: RequestID) =>
     _current = request
@@ -160,15 +137,10 @@ class BackendHandler is Handler
     None
 
   fun ref finished(request_id: RequestID) =>
-    match (_current, _file)
-    | (let request: Request, let file: File) =>
+    match _current
+    | let request: Request =>
       if request.method() == GET then
-        match _chunked
-        | Chunked =>
-          _send_chunked_response(file, request_id)
-        | None =>
-          _send_oneshot_response(file, request_id)
-        end
+        _file_sender.send_response(request_id)
       else
         let msg = "only GET is allowed"
         _session.send_raw(
@@ -197,51 +169,105 @@ class BackendHandler is Handler
     end
     _current = None
 
-  fun ref _send_chunked_response(file: File, request_id: RequestID) =>
+actor FileSender
+  let _content_type: String
+  let _file: (File | None)
+  let _file_size: USize
+  let _chunked: (Chunked | None)
+  let _session: Session
+  let _crlf: Array[U8] val
+  let _chunk_size: USize = 8192
+
+  new create(session: Session, file_path: FilePath) =>
+    _session = session
+    _file =
+      try
+        OpenFile(file_path) as File
+      end
+    _file_size = try (_file as File).size() else 0 end
+    _content_type = MimeTypes(file_path.path)
+    _chunked = if _file_size > _chunk_size then Chunked else None end
+    _crlf = recover val [as U8: '\r'; '\n'] end
+
+  be send_response(request_id: RequestID) =>
+    match _chunked
+    | Chunked => 
+      send_chunked_response(request_id)
+    | None =>
+      send_oneshot_response(request_id)
+    end
+
+  fun ref send_chunked_response(request_id: RequestID) =>
     let response = BuildableResponse
     response.set_transfer_encoding(_chunked)
     response.set_header("Content-Type", _content_type)
     _session.send_start(consume response, request_id)
     // move to start
-    file.seek_start(0)
+    try
+      (_file as File).seek_start(0)
+      this.send_chunked_chunk(request_id)
+    else
+      this.send_error(request_id)
+    end
 
-    let chunk_size = USize(8192) // arbitrary choice
-
-    let crlf = recover val [as U8: '\r'; '\n'] end
-    while true do
-      let file_chunk = file.read(chunk_size)
+  be send_chunked_chunk(request_id: RequestID) =>
+    try
+      let file = this._file as File
+      let file_chunk = file.read(_chunk_size)
       if file_chunk.size() == 0 then
         // send last chunk
-        let last_chunk = (recover val Format.int[USize](0 where fmt = FormatHexBare).>append(crlf).>append(crlf) end).array()
+        let last_chunk = (recover val Format.int[USize](0 where fmt = FormatHexBare).>append(_crlf).>append(_crlf) end).array()
         _session.send_chunk(last_chunk, request_id)
         // finish sending
         _session.send_finished(request_id)
-        break
       else
         // manually form a chunk
-        let chunk_prefix = (recover val Format.int[USize](file_chunk.size() where fmt = FormatHexBare).>append(crlf) end).array()
+        let chunk_prefix = (recover val Format.int[USize](file_chunk.size() where fmt = FormatHexBare).>append(_crlf) end).array()
         _session.send_chunk(chunk_prefix, request_id)
         _session.send_chunk(consume file_chunk, request_id)
-        _session.send_chunk(crlf, request_id)
+        _session.send_chunk(_crlf, request_id)
+        send_chunked_chunk(request_id)
       end
+    else
+      this.send_error(request_id)
     end
 
-  fun ref _send_oneshot_response(file: File, request_id: RequestID) =>
+  fun ref send_oneshot_response(request_id: RequestID) =>
     let response = BuildableResponse
     response.set_content_length(_file_size)
     response.set_header("Content-Type", _content_type)
     _session.send_start(consume response, request_id)
     // move to start
-    file.seek_start(0)
+    try
+      (_file as File).seek_start(0)
+      this.send_oneshot_chunk(request_id)
+    else
+      this.send_error(request_id)
+    end
 
-    var read = USize(0)
-    while read < _file_size do
-      let file_chunk = file.read(_file_size - read)
-      read = read + file_chunk.size()
+  be send_oneshot_chunk(request_id: RequestID) =>
+    try
+      let file = this._file as File
+      let file_chunk = file.read(_file_size) // just read as much as we can get
       if file_chunk.size() == 0 then
         _session.send_finished(request_id)
-        break
       else
         _session.send_chunk(consume file_chunk, request_id)
+        this.send_oneshot_chunk(request_id)
       end
+    else
+      this.send_error(request_id)
     end
+
+  be send_error(request_id: RequestID) =>
+    let msg = "Error reading from file"
+    _session.send_raw(
+      Responses.builder().set_status(StatusInternalServerError)
+        .add_header("Content-Type", "text/plain")
+        .set_content_length(msg.size())
+        .finish_headers()
+        .add_chunk(msg)
+        .build(),
+      request_id
+    )
+    _session.send_finished(request_id)
