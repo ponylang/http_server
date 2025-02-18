@@ -57,13 +57,14 @@ class SyncHandlerWrapper is Handler
   fun ref chunk(data: ByteSeq val, request_id: RequestID) =>
     _body_buffer = _body_buffer + data
 
-  fun ref finished(request_id: RequestID) =>
+  fun ref finished(request_id: RequestID): Bool =>
     if not _sent then
       // resetting _body_buffer
       let res = _run_handler(_request, _body_buffer = ByteArrays)
       _session.send_raw(res, request_id)
     end
     _session.send_finished(request_id)
+    true
 
 
 

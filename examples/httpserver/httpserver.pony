@@ -206,7 +206,7 @@ class BackendHandler is Handler
       )
     end
 
-  fun ref finished(request_id: RequestID) =>
+  fun ref finished(request_id: RequestID): Bool =>
     """
     Called when the last chunk has been handled and the full request has been received.
 
@@ -229,4 +229,5 @@ class BackendHandler is Handler
     // Required call to finish request handling
     // if missed out, the server will misbehave
     _session.send_finished(request_id)
+    true
 
