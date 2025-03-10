@@ -81,7 +81,9 @@ actor _ServerConnection is (Session & HTTP11RequestHandler)
     Indicates that the last *inbound* body chunk has been sent to
     `_chunk`. This is passed on to the back end.
     """
-    _backend.finished(request_id)
+    if not _backend.finished(request_id) then
+      this._receive_finished(request_id)
+    end
 
   be _receive_failed(parse_error: RequestParseError, request_id: RequestID) =>
     _backend.failed(parse_error, request_id)
