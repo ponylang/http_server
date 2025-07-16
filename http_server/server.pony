@@ -1,6 +1,6 @@
 use "collections"
 use "net"
-use "net_ssl"
+use "ssl/net"
 use "time"
 use "debug"
 
@@ -137,4 +137,3 @@ actor Server is _SessionRegistry
     Called when we stop listening.
     """
     _notify.closed(this)
-

@@ -1,7 +1,7 @@
 use "files"
 use "net"
-use "net_ssl"
 use "pony_test"
+use "ssl/net"
 
 actor \nodoc\ _ServerErrorHandlingTests is TestList
   new make() =>
