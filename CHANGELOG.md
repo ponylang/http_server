@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Change SSL Dependency ([PR #84](https://github.com/ponylang/http_server/pull/84))
 
 ## [0.6.2] - 2024-04-20
 
