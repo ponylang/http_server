@@ -12,7 +12,7 @@
       "version": "0.6.2"
     },
     {
-      "locator": "github.com/ponylang/json.git",
+      "locator": "github.com/ponylang/json-ng.git",
       "version": "0.1.0"
     }
   ],

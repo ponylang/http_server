@@ -84,13 +84,11 @@ class val ServerConfig
     connection_timeout > 0
 
   fun box to_json(): String =>
-    let doc = JsonDoc
     let obj = JsonObject
-    obj.data("host") = host
-    obj.data("port") = port
-    obj.data("connection_timeout") = connection_timeout.i64()
-    obj.data("max_request_handling_lag") = max_request_handling_lag.i64()
-    obj.data("max_concurrent_connections") = max_concurrent_connections.i64()
-    obj.data("timeout_heartbeat_interval") = timeout_heartbeat_interval.i64()
-    doc.data = obj
-    doc.string(where indent = "  ", pretty_print = true)
+      .update("host", host)
+      .update("port", port)
+      .update("connection_timeout", connection_timeout.i64())
+      .update("max_request_handling_lag", max_request_handling_lag.i64())
+      .update("max_concurrent_connections", max_concurrent_connections.i64())
+      .update("timeout_heartbeat_interval", timeout_heartbeat_interval.i64())
+    obj.pretty_string()
