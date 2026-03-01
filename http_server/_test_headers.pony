@@ -33,7 +33,7 @@ class \nodoc\ iso _HeadersGetProperty is Property1[Array[Header]]
       headers.add(header._1, header._2)
       added.push(header)
       for added_header in added.values() do
-        match headers.get(added_header._1.upper())
+        match \exhaustive\ headers.get(added_header._1.upper())
         | None => h.fail("not found " + added_header._1)
         | let s: String =>
           var found = false

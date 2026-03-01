@@ -190,7 +190,7 @@ actor FileSender
     _crlf = recover val [as U8: '\r'; '\n'] end
 
   be send_response(request_id: RequestID) =>
-    match _chunked
+    match \exhaustive\ _chunked
     | Chunked => 
       send_chunked_response(request_id)
     | None =>

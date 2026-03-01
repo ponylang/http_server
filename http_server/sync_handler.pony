@@ -38,7 +38,7 @@ class SyncHandlerWrapper is Handler
       _handler(request, None)?
     else
       // create 500 response
-      match _handler.error_response(request)
+      match \exhaustive\ _handler.error_response(request)
       | let bsi: ByteSeqIter => bsi
       | None =>
         // default 500 response

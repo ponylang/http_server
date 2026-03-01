@@ -182,7 +182,7 @@ class iso _FullResponseBuilder
     content-length needs to be set before this happens.
     In case of chunked transfer-encoding this will be encoded into proper chunks.
     """
-    let d = match data
+    let d = match \exhaustive\ data
     | let array: Array[U8] val => array
     | let string: String val => string.array()
     end
@@ -310,7 +310,7 @@ class val BuildableResponse is (Response & ByteSeqIter)
     end
 
   fun ref set_transfer_encoding(c: (Chunked | None)): BuildableResponse ref =>
-    match c
+    match \exhaustive\ c
     | Chunked =>
       set_header("Transfer-Encoding", "chunked")
       set_content_length(None) // no content-length allowed for chunked encoding
@@ -328,7 +328,7 @@ class val BuildableResponse is (Response & ByteSeqIter)
     """
     Set or un-set the `Content-Length` header.
     """
-    match cl
+    match \exhaustive\ cl
     | let clu: USize =>
       set_header("Content-Length", clu.string())
     | None =>

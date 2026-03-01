@@ -89,7 +89,7 @@ class HTTP11RequestParser
   fun ref parse(data: Array[U8] val): ParseReturn =>
     _buffer = _buffer + (consume data)
     let ret =
-      match _state
+      match \exhaustive\ _state
       | _ExpectRequestLine =>
         _parse_request_line()
       | _ExpectHeaders =>
@@ -155,7 +155,7 @@ class HTTP11RequestParser
     | (true, let method_end_idx: USize) =>
       let raw_method = _buffer.string(start, method_end_idx)
       let method = Methods.parse(raw_method)
-      match method
+      match \exhaustive\ method
       | None => return UnknownMethod
       | let m: Method =>
         _current_request.set_method(m)
@@ -384,7 +384,7 @@ class HTTP11RequestParser
       let chunk_length_str = _buffer.string(0, chunk_length_end)
       _buffer = _buffer.drop(chunk_start_line_end + 2)
       try
-        match chunk_length_str.read_int[USize](0, 16)?
+        match \exhaustive\ chunk_length_str.read_int[USize](0, 16)?
         | (0, 0) =>
           return InvalidChunk // chunk-size is not a hex number
         | (0, _) =>

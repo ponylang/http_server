@@ -58,7 +58,7 @@ class _ParseRequestBenchmark
     let data_iter = _data.values()
     while data_iter.has_next() do
       let chunk = data_iter.next()?
-      match _parser.parse(chunk.array())
+      match \exhaustive\ _parser.parse(chunk.array())
       | let err: RequestParseError =>
         Debug("parsing failed.")
         if not data_iter.has_next() then

@@ -25,7 +25,7 @@ class \nodoc\ iso _BuildableResponseTest is UnitTest
 
     
     let with_length = BuildableResponse().set_content_length(42)
-    match with_length.header("Content-Length")
+    match \exhaustive\ with_length.header("Content-Length")
     | let hvalue: String =>
       h.assert_eq[String]("42", hvalue)
     | None =>

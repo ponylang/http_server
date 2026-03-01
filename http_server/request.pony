@@ -17,7 +17,7 @@ primitive HTTP11 is _Version
     'HTTP/1.1'
   fun eq(o: Version): Bool => o is this
   fun lt(o: Version): Bool =>
-    match o
+    match \exhaustive\ o
     | let _: HTTP11 => false
     | let _: HTTP10 => false
     | let _: HTTP09 => false
@@ -39,7 +39,7 @@ primitive HTTP10 is _Version
     'HTTP/1.0'
   fun eq(o: Version): Bool => o is this
   fun lt(o: Version): Bool =>
-    match o
+    match \exhaustive\ o
     | let _: HTTP11 => true
     | let _: HTTP10 => false
     | let _: HTTP09 => false
@@ -60,7 +60,7 @@ primitive HTTP09 is _Version
     'HTTP/0.9'
   fun eq(o: Version): Bool => o is this
   fun lt(o: Version): Bool =>
-    match o
+    match \exhaustive\ o
     | let _: HTTP11 => true
     | let _: HTTP10 => true
     | let _: HTTP09 => false
@@ -229,7 +229,7 @@ class val BuildableRequest is Request
     """
     (transfer_coding() is Chunked)
     or
-    match content_length()
+    match \exhaustive\ content_length()
     | let x: USize if x > 0 => true
     else
       false

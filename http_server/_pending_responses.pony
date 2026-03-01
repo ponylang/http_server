@@ -11,7 +11,7 @@ class val _ByteSeqsWrapper is ByteSeqIter
     Iter[_ByteSeqs](byteseqs.values())
       .flat_map[ByteSeq](
         {(bs) =>
-          match bs
+          match \exhaustive\ bs
           | let b: ByteSeq =>
             object ref is Iterator[ByteSeq]
               var returned: Bool = false
