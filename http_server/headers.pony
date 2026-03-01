@@ -163,7 +163,7 @@ class Headers
       while l < r do
         i = (l + r).fld(2)
         let header = _hl(i)?
-        match IgnoreAsciiCase.compare(header._1, name)
+        match \exhaustive\ IgnoreAsciiCase.compare(header._1, name)
         | Less =>
           l = i + 1
         | Equal =>

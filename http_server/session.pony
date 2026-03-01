@@ -200,7 +200,7 @@ trait tag Session
 
       fun ref apply(request: Request val, request_id: RequestID): Any =>
         let body =
-          match request.content_length()
+          match \exhaustive\ request.content_length()
           | let cl: USize =>
             "You've sent us " + cl.string() + " bytes! Thank you!"
           | None if request.transfer_coding() is Chunked =>

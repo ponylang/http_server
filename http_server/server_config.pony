@@ -71,7 +71,7 @@ class val ServerConfig
      max_request_handling_lag = max_request_handling_lag'
      max_concurrent_connections = max_concurrent_connections'
      timeout_heartbeat_interval =
-     match timeout_heartbeat_interval'
+     match \exhaustive\ timeout_heartbeat_interval'
      | None =>
        // use a quarter of the actual configured timeout
        // but at minimum 1 second

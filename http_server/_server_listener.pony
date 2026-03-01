@@ -48,7 +48,7 @@ class _ServerListener is TCPListenNotify
     Create a notifier for a specific HTTP socket. A new instance of the
     back-end Handler is passed along so it can be used on each `Payload`.
     """
-    match _sslctx
+    match \exhaustive\ _sslctx
     | None =>
       _ServerConnHandler(_handlermaker, _server, _config)
     | let ctx: SSLContext =>

@@ -164,7 +164,7 @@ class BackendHandler is Handler
     // if request is chunked, we also send the response in chunked Transfer
     // Encoding
     header_builder =
-      match _chunked
+      match \exhaustive\ _chunked
       | Chunked =>
         header_builder.set_transfer_encoding(Chunked)
       | None =>
@@ -199,7 +199,7 @@ class BackendHandler is Handler
     match (_body_builder = None)
     | let builder: ResponseBuilderBody =>
       _body_builder = builder.add_chunk(
-        match data
+        match \exhaustive\ data
         | let adata: Array[U8] val => adata
         | let s: String => s.array()
         end
