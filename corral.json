@@ -10,10 +10,6 @@
     {
       "locator": "github.com/ponylang/valbytes.git",
       "version": "0.6.2"
-    },
-    {
-      "locator": "github.com/ponylang/json-ng.git",
-      "version": "0.3.0"
     }
   ],
   "info": {
