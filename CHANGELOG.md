@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Update ponylang/ssl to 2.0.1 ([PR #99](https://github.com/ponylang/http_server/pull/99))
 
 ## [0.6.3] - 2025-07-16
 
