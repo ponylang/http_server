@@ -13,7 +13,7 @@ jobs:
     name: Test against ponyc main
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ponylang/shared-docker-ci-standard-builder-with-libressl-4.2.0:nightly
+      image: ghcr.io/ponylang/shared-docker-ci-standard-builder-with-libressl-4.2.1:nightly
     steps:
       - uses: actions/checkout@v6.0.2
       - name: Test

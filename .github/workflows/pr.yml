@@ -21,7 +21,7 @@ jobs:
     name: Test against recent ponyc release
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ponylang/shared-docker-ci-standard-builder-with-libressl-4.2.0:release
+      image: ghcr.io/ponylang/shared-docker-ci-standard-builder-with-libressl-4.2.1:release
     steps:
       - uses: actions/checkout@v6.0.2
       - name: Test
