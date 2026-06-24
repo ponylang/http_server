@@ -26,7 +26,7 @@ class \nodoc\ val _PipeliningOrderHandlerFactory is HandlerFactory
     object ref is Handler
       let _session: Session = session
 
-      fun ref finished(request_id: RequestID) =>
+      fun ref finished(request_id: RequestID): Bool =>
         let rid = request_id.string()
         let res = Responses.builder()
           .set_status(StatusOK)
@@ -48,6 +48,7 @@ class \nodoc\ val _PipeliningOrderHandlerFactory is HandlerFactory
             0
           )
         )
+        true
     end
 
 class \nodoc\ iso _PipeliningOrderTest is UnitTest
